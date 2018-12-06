@@ -2,116 +2,98 @@ services:
     base.manager:
         abstract: true
         calls:
-            - [setEm, ["@doctrine.orm.entity_manager"]]
-            - [setLogger, ["@logger"]]
-            - [setSession, ["@session"]]
-            - [setValidator, ["@validator"]]
-
-    series.manager:
-        parent: base.manager
-        class: MyskillsBundle\DomainManager\Series\SeriesManager
-        arguments:
-            - "@series.repository"
-            - "@tag.repository"
-            - "@genre.repository"
-            - "@country.repository"
+        - [setEm, ["@doctrine.orm.entity_manager"]]
+        - [setLogger, ["@logger"]]
+        - [setSession, ["@session"]]
+        - [setValidator, ["@validator"]]
 
     video.manager:
         parent: base.manager
         class: MyskillsBundle\DomainManager\Video\VideoManager
         arguments:
-            - "@video.repository"
-            - "%web_directory%"
+        - "@video.repository"
+        - "%web_directory%"
 
     video_clip.manager:
         parent: base.manager
         class: MyskillsBundle\DomainManager\VideoClip\VideoClipManager
         arguments:
-            - "@video_clip.repository"
-            - "@user_word.repository"
-            - "@doctrine.orm.entity_manager"
-            - "%web_directory%"
+        - "@video_clip.repository"
+        - "@user_word.repository"
+        - "@doctrine.orm.entity_manager"
+        - "%web_directory%"
 
     dictionary_en_ru.manager:
         parent: base.manager
         class: MyskillsBundle\DomainManager\Dictionary\DictionaryEnRuManager
         arguments:
-            - "@dict_word_en.repository"
+        - "@dict_word_en.repository"
 
     dictionary_ru_en.manager:
         parent: base.manager
         class: MyskillsBundle\DomainManager\Dictionary\DictionaryRuEnManager
         arguments:
-            - "@dict_word_ru.repository"
+        - "@dict_word_ru.repository"
 
     search.manager:
         parent: base.manager
         class: MyskillsBundle\DomainManager\Search\SearchManager
         arguments:
-            - "@iakumai.sphinxsearch.search"
+        - "@iakumai.sphinxsearch.search"
 
     api_translation.manager:
         parent: base.manager
         class: MyskillsBundle\DomainManager\ApiTranslation\ApiTranslationManager
         arguments:
-            - "@dict_word_en.repository"
-            - "@dict_source.repository"
-            - "@dict_translation_en_ru.repository"
-            - "@dict_translation_ru_en.repository"
-            - "@yandex.translator"
-            - "@skyeng.translator"
-            - "@iakumai.sphinxsearch.search"
-            - "@doctrine.orm.entity_manager"
+        - "@dict_word_en.repository"
+        - "@dict_source.repository"
+        - "@dict_translation_en_ru.repository"
+        - "@dict_translation_ru_en.repository"
+        - "@yandex.translator"
+        - "@skyeng.translator"
+        - "@iakumai.sphinxsearch.search"
+        - "@doctrine.orm.entity_manager"
 
     user_dictionary.manager:
         parent: base.manager
         class: MyskillsBundle\DomainManager\UserDictionary\UserDictionaryManager
         arguments:
-            - "@user_word.repository"
-            - "@dict_word_en.repository"
-            - "@user_folder.repository"
-            - "@video.manager"
-            - "@video_clip.manager"
-            - "@doctrine.orm.entity_manager"
+        - "@user_word.repository"
+        - "@dict_word_en.repository"
+        - "@user_folder.repository"
+        - "@video.manager"
+        - "@video_clip.manager"
+        - "@doctrine.orm.entity_manager"
 
     user.manager:
         parent: base.manager
         class: MyskillsBundle\DomainManager\User\UserManager
         arguments:
-            - "@fos_user.user_manager"
-            - "@game.manager"
-            - "%avatar_directory%"
-            - "%web_directory%"
-            - "@service_container"
-
-    subscription.manager:
-        parent: base.manager
-        class: MyskillsBundle\DomainManager\Subscription\SubscriptionManager
-        arguments:
-            - "@payment.repository"
-            - "@promo.repository"
-            - "@robokassa_client"
-            - "@doctrine"
+        - "@fos_user.user_manager"
+        - "@game.manager"
+        - "%avatar_directory%"
+        - "%web_directory%"
+        - "@service_container"
 
     dict_source.manager:
         parent: base.manager
         class: MyskillsBundle\DomainManager\Source\DictSourceManager
         arguments:
-            - "@dict_source.repository"
-            - "@doctrine.orm.entity_manager"
+        - "@dict_source.repository"
+        - "@doctrine.orm.entity_manager"
 
     game.manager:
         parent: base.manager
         class: MyskillsBundle\DomainManager\Game\GameManager
         arguments:
-            - "@game.repository"
-            - "@video_clip.manager"
-            - "@doctrine.orm.entity_manager"
-            - "%web_directory%"
+        - "@game.repository"
+        - "@video_clip.manager"
+        - "@doctrine.orm.entity_manager"
+        - "%web_directory%"
 
     book.manager:
         parent: base.manager
         class: MyskillsBundle\DomainManager\Book\BookManager
         arguments:
-            - "@book.repository"
-            - "@doctrine.orm.entity_manager"
+        - "@book.repository"
+        - "@doctrine.orm.entity_manager"

@@ -11,7 +11,11 @@
         {"type": "vcs", "url": "https://github.com/tetraset/yandex.git"}
     ],
     "require": {
+<<<<<<< HEAD
         "php": ">=5.3.9",
+=======
+        "php": ">=5.6",
+>>>>>>> 86c1647be7930b9982165d4cc0895ca5cfae1567
         "symfony/symfony": "2.7.*",
         "doctrine/orm": "^2.4.8",
         "doctrine/dbal": "<2.5",
@@ -49,7 +53,8 @@
         "doctrine/doctrine-migrations-bundle": "^1.0",
         "ijanki/ftp-bundle": "^1.0",
         "tetraset/yandex": "dev-master",
-        "davechild/textstatistics": "^1.0"
+        "davechild/textstatistics": "^1.0",
+        "google/apiclient": "^2.2"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3",

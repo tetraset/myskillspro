@@ -2,87 +2,64 @@ services:
     base.controller:
         abstract: true
         calls:
-            - [setLogger, ["@logger"]]
-            - [setCacheService, ["@memcached_cache"]]
-            - [setSerializer, ["@app_serializer"]]
-            - [setRequestStack, ["@request_stack"]]
-            - [setTemplating, ["@templating"]]
-            - [setRouter, ["@router"]]
-            - [setTokenStorage, ["@security.token_storage"]]
-            - [setFormFactory, ["@form.factory"]]
-            - [setTokenizer, ["@tokenizer"]]
+        - [setLogger, ["@logger"]]
+        - [setCacheService, ["@memcached_cache"]]
+        - [setSerializer, ["@app_serializer"]]
+        - [setRequestStack, ["@request_stack"]]
+        - [setTemplating, ["@templating"]]
+        - [setRouter, ["@router"]]
+        - [setTokenStorage, ["@security.token_storage"]]
+        - [setFormFactory, ["@form.factory"]]
+        - [setTokenizer, ["@tokenizer"]]
 
     main.controller:
         parent: base.controller
-        class: MyskillsBundle\Controller\MediaController
-        arguments:
-            - "@series.manager"
+        class: MyskillsBundle\Controller\MainController
 
     book.controller:
         parent: base.controller
         class: MyskillsBundle\Controller\BookController
         arguments:
-            - "@book.manager"
-
-    series.controller:
-        parent: base.controller
-        class: MyskillsBundle\Controller\SeriesController
-        arguments:
-            - "@series.manager"
-            - "@video.manager"
-            - "@ororo"
-
-    video_clip.controller:
-        parent: base.controller
-        class: MyskillsBundle\Controller\VideoClipController
-        arguments:
-            - "@video_clip.manager"
+        - "@book.manager"
 
     dictionary.controller:
         parent: base.controller
         class: MyskillsBundle\Controller\DictionaryController
         arguments:
-            - "@dictionary_en_ru.manager"
-            - "@dictionary_ru_en.manager"
-            - "@search.controller"
+        - "@dictionary_en_ru.manager"
+        - "@dictionary_ru_en.manager"
+        - "@search.controller"
 
     search.controller:
         parent: base.controller
         class: MyskillsBundle\Controller\SearchController
         arguments:
-            - "@search.manager"
+        - "@search.manager"
 
     api_translation.controller:
         parent: base.controller
         class: MyskillsBundle\Controller\ApiTranslationController
         arguments:
-            - "@api_translation.manager"
+        - "@api_translation.manager"
 
     user_dictionary.controller:
         parent: base.controller
         class: MyskillsBundle\Controller\UserDictionaryController
         arguments:
-            - "@user_dictionary.manager"
+        - "@user_dictionary.manager"
 
     user.controller:
         parent: base.controller
         class: MyskillsBundle\Controller\UserController
         arguments:
-            - "@user.manager"
-
-    subscription.controller:
-        parent: base.controller
-        class: MyskillsBundle\Controller\SubscriptionController
-        arguments:
-            - "@subscription.manager"
+        - "@user.manager"
 
     game.controller:
         parent: base.controller
         class: MyskillsBundle\Controller\GameController
         arguments:
-            - "@game.manager"
-            - "@user.manager"
-            - "@series.manager"
+        - "@game.manager"
+        - "@user.manager"
 
     error.controller:
         parent: base.controller

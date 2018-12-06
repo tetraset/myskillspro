@@ -1,16 +1,13 @@
 imports:
-    - { resource: services.repositories.yml }
-    - { resource: services.managers.yml }
-    - { resource: services.controllers.yml }
-    - { resource: services.commands.yml }
+- { resource: services.repositories.yml }
+- { resource: services.managers.yml }
+- { resource: services.controllers.yml }
+- { resource: services.commands.yml }
 
 services:
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
     social.user_provider:
         class: Application\Sonata\UserBundle\Security\Core\User\MyFOSUBUserProvider
-        arguments: ['@fos_user.user_manager', { facebook: facebookId, vkontakte: vkontakteId, twitter: twitterId }]
+        arguments: ['@fos_user.user_manager', { facebook: facebookId }]
 
     # sonata admin services
 
@@ -18,114 +15,83 @@ services:
         class: MyskillsBundle\Admin\VideoAdmin
         arguments: [~, MyskillsBundle\Entity\Video, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Content, label: Videos }
-
-    admin.series:
-        class: MyskillsBundle\Admin\SeriesAdmin
-        arguments: [~, MyskillsBundle\Entity\Series, ~]
-        tags:
-            - { name: sonata.admin, manager_type: orm, group: Content, label: Series }
-        calls:
-            - [setVideoAdmin, ["@admin.video"]]
+        - { name: sonata.admin, manager_type: orm, group: Content, label: Videos }
 
     admin.genres:
         class: MyskillsBundle\Admin\GenreAdmin
         arguments: [~, MyskillsBundle\Entity\Genre, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Content, label: Genres }
+        - { name: sonata.admin, manager_type: orm, group: Content, label: Genres }
 
     admin.tags:
         class: MyskillsBundle\Admin\TagAdmin
         arguments: [~, MyskillsBundle\Entity\Tag, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Content, label: Tags }
-
-    admin.tags:
-        class: MyskillsBundle\Admin\CountryAdmin
-        arguments: [~, MyskillsBundle\Entity\Country, ~]
-        tags:
-            - { name: sonata.admin, manager_type: orm, group: Content, label: Countries }
-
-    admin.promo:
-        class: MyskillsBundle\Admin\PromoAdmin
-        arguments: [~, MyskillsBundle\Entity\Promo, ~]
-        tags:
-            - { name: sonata.admin, manager_type: orm, group: Promo, label: Promo }
+        - { name: sonata.admin, manager_type: orm, group: Content, label: Tags }
 
     admin.words.en:
         class: MyskillsBundle\Admin\DictWordEnAdmin
         arguments: [~, MyskillsBundle\Entity\DictWordEn, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Words, label: English, pager_type: "simple" }
+        - { name: sonata.admin, manager_type: orm, group: Words, label: English, pager_type: "simple" }
 
     admin.words.ru:
         class: MyskillsBundle\Admin\DictWordRuAdmin
         arguments: [~, MyskillsBundle\Entity\DictWordRu, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Words, label: Russian, pager_type: "simple" }
+        - { name: sonata.admin, manager_type: orm, group: Words, label: Russian, pager_type: "simple" }
 
     admin.translations.en.ru:
         class: MyskillsBundle\Admin\DictTranslationEnRuAdmin
         arguments: [~, MyskillsBundle\Entity\DictTranslationEnRu, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Translations, label: En->Ru, pager_type: "simple" }
+        - { name: sonata.admin, manager_type: orm, group: Translations, label: En->Ru, pager_type: "simple" }
         calls:
-            - [setWordAdmin, ["@admin.words.en"]]
+        - [setWordAdmin, ["@admin.words.en"]]
 
     admin.translations.ru.en:
         class: MyskillsBundle\Admin\DictTranslationRuEnAdmin
         arguments: [~, MyskillsBundle\Entity\DictTranslationRuEn, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Translations, label: Ru->En, pager_type: "simple" }
+        - { name: sonata.admin, manager_type: orm, group: Translations, label: Ru->En, pager_type: "simple" }
         calls:
-            - [setWordAdmin, ["@admin.words.ru"]]
+        - [setWordAdmin, ["@admin.words.ru"]]
 
     admin.sources:
         class: MyskillsBundle\Admin\DictSourceAdmin
         arguments: [~, MyskillsBundle\Entity\DictSource, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Sources, label: Sources }
+        - { name: sonata.admin, manager_type: orm, group: Sources, label: Sources }
 
     # cache provider
 
     memcached:
         class: Memcached
         calls:
-            - [ addServer, ['localhost', 11211] ]
+        - [ addServer, ['localhost', 11211] ]
 
     memcached_cache:
         class: Doctrine\Common\Cache\MemcachedCache
         calls:
-            - [ setMemcached, [@memcached] ]
-            - [ setNamespace, ["%database_name%"] ]
+        - [ setMemcached, [@memcached] ]
+        - [ setNamespace, ["%database_name%"] ]
 
     # translators
 
     bing.translator:
         class: MyskillsBundle\Service\BingTranslatorService
         calls:
-            - [setClientID, ["%bing_client_id%"]]
-            - [setClientSecret, ["%bing_client_secret%"]]
-            - [setGrantType, ["%bing_grant_type%"]]
+        - [setClientID, ["%bing_client_id%"]]
+        - [setClientSecret, ["%bing_client_secret%"]]
+        - [setGrantType, ["%bing_grant_type%"]]
 
     yandex.translator:
         class: MyskillsBundle\Service\YandexTranslatorService
         calls:
-            - [setApiKey, ["%yandex_api_key%"]]
+        - [setApiKey, ["%yandex_api_key%"]]
 
     skyeng.translator:
         class: MyskillsBundle\Service\SkyEngTranslatorService
-
-    # robokassa
-
-    robokassa_client:
-        class: MyskillsBundle\Service\RobokassaClientService
-        arguments:
-            - "%robokassa_pass1%"
-            - "%robokassa_pass2%"
-            - "%robokassa_pass1_test%"
-            - "%robokassa_pass2_test%"
-            - "%robokassa_shop_id%"
 
     # another
 
@@ -137,13 +103,13 @@ services:
         class: MyskillsBundle\Form\Type\VideoRegistrationFormType
         arguments: [%fos_user.model.user.class%]
         tags:
-            - { name: form.type, alias: video_user_registration }
+        - { name: form.type, alias: video_user_registration }
 
     video.user.profile:
         class: MyskillsBundle\Form\Type\ProfileType
         arguments: [%fos_user.model.user.class%]
         tags:
-            - { name: form.type, alias: video_user_profile }
+        - { name: form.type, alias: video_user_profile }
 
     jms_serializer_context:
         class: JMS\Serializer\SerializationContext
@@ -155,11 +121,3 @@ services:
     tokenizer:
         class: MyskillsBundle\Service\TokenService
         arguments: ["@session"]
-
-    yandex.disk:
-        class: MyskillsBundle\Service\YandexDiskService
-        arguments: ["@memcached_cache", ["%yandex_disk_token%"]]
-
-    ororo:
-        class: MyskillsBundle\Service\OroroService
-        arguments: ["@logger", "@memcached_cache"]

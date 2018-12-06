@@ -1,6 +1,6 @@
 imports:
-    - { resource: config.yml }
-    - { resource: parameters_dev.yml }
+- { resource: config.yml }
+- { resource: parameters_dev.yml }
 
 framework:
     router:
@@ -33,26 +33,6 @@ monolog:
                 VERBOSITY_VERY_VERBOSE: NOTICE
                 VERBOSITY_DEBUG: DEBUG
             channels: ["doctrine"]
-        # uncomment to get logging in your browser
-        # you may have to allow bigger header sizes in your Web server configuration
-        #firephp:
-        #    type:   firephp
-        #    level:  info
-        #chromephp:
-        #    type:   chromephp
-        #    level:  info
 
 assetic:
     use_controller: true
-
-#doctrine:
-#    orm:
-#        metadata_cache_driver:
-#            type: array
-#        query_cache_driver:
-#            type: array
-#        result_cache_driver:
-#            type: array
-
-#swiftmailer:
-#    delivery_address: me@example.com

@@ -35,13 +35,15 @@ parameters:
     vk_client_id: id
     vk_client_secret: secret
     vk_scope: scope
-    bing_client_id: myskills_jp
-    bing_client_secret: MMw5r2GE9qUDAPpdW4uy44PgxY/z/SgdaKk4ay962eY=
+    bing_client_id: bing_client_id
+    bing_client_secret: bing_client_secret
     bing_grant_type: client_credentials
-    yandex_api_key: trnsl.1.1.20160529T080540Z.bd9dcfcbbc96d4f2.79e484a38743ca14f699cf5df9d41b36139ac73b
+    yandex_api_key: yandex_api_key
     robokassa_pass1: pass1
     robokassa_pass2: pass2
     robokassa_pass1_test: pass1_test
     robokassa_pass2_test: pass2_test
     robokassa_shop_id: shop_id
     yandex_disk_token: yandex_disk_token
+    proxy_user: proxy_user
+    proxy_pass: proxy_pass

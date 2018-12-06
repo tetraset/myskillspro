@@ -68,25 +68,13 @@ facebook_login:
 # anisub service controllers
 
 main:
-    resource: "@MyskillsBundle/Controller/MediaController.php"
-    type:     annotation
-    options:
-        expose: true
-
-series:
-    resource: "@MyskillsBundle/Controller/SeriesController.php"
+    resource: "@MyskillsBundle/Controller/MainController.php"
     type:     annotation
     options:
         expose: true
 
 books:
     resource: "@MyskillsBundle/Controller/BookController.php"
-    type:     annotation
-    options:
-        expose: true
-
-video_clip:
-    resource: "@MyskillsBundle/Controller/VideoClipController.php"
     type:     annotation
     options:
         expose: true
@@ -127,18 +115,8 @@ user:
     options:
         expose: true
 
-subscription:
-    resource: "@MyskillsBundle/Controller/SubscriptionController.php"
-    type:     annotation
-    options:
-        expose: true
-
 error:
     resource: "@MyskillsBundle/Controller/ErrorController.php"
     type:     annotation
     options:
         expose: true
-
-
-
-

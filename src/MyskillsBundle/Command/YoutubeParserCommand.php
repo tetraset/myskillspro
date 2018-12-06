@@ -1,6 +1,5 @@
 <?php
 namespace MyskillsBundle\Command;
-
 use Doctrine\ORM\EntityManager;
 use MyskillsBundle\DomainManager\Video\VideoManager;
 use MyskillsBundle\Entity\Video;
@@ -10,10 +9,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-
 set_time_limit(0);
 date_default_timezone_set('Europe/Moscow');
-
 class YoutubeParserCommand extends Command {
     private $webDirectory;
     private $videoManager;
@@ -77,7 +74,6 @@ class YoutubeParserCommand extends Command {
         'LearnEnglishWithJulia' => 'UClij8Hk2hGAHLFqNmSEZ-yA',
         'EnglishWithKristina' => 'UChqe8_qxbGA0z4t1wgLNWbg'
     ];
-
     public function __construct(
         VideoManager $videoManager,
         EntityManager $em,
@@ -88,7 +84,6 @@ class YoutubeParserCommand extends Command {
         $this->videoManager = $videoManager;
         $this->em = $em;
     }
-
     protected function configure()
     {
         $this
@@ -100,24 +95,18 @@ class YoutubeParserCommand extends Command {
             )
         ;
     }
-
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln("\n<--start: ".date('Y-m-d H:i'));
         $channelKey = $input->getArgument('channel');
         $channelId = null;
         $i = 1;
-
         if (!$channelKey) {
             $channelKey = array_rand($this->channels);
         }
-
         $output->writeln("Use channel: $channelKey");
         $channelId = $this->channels[$channelKey];
-
-        require_once $this->webDirectory . '/../libs/google-api-php-client/vendor/autoload.php';
         putenv('GOOGLE_APPLICATION_CREDENTIALS='.$this->webDirectory . '/../app/config/MySkillsPro-0a01cc8f1631.json');
-
         do {
             $output->writeln("Iteration #: $i");
             $client = new \Google_Client();
@@ -126,7 +115,6 @@ class YoutubeParserCommand extends Command {
             $client->setDeveloperKey('AIzaSyAxDigNJ5XQOXK1QqnFgsBriqs1LkFZqzY');
             $youtube = new \Google_Service_YouTube($client);
             $searchResponse = [];
-
             try {
                 $searchResponse = $youtube->search->listSearch('id,snippet', array(
                     'channelId' => $channelId,
@@ -142,44 +130,34 @@ class YoutubeParserCommand extends Command {
                 $output->writeln(sprintf('<error>An client error occurred: <code>%s</code></error>',
                     htmlspecialchars($e->getMessage())));
             }
-
             if (empty($searchResponse['items'])) {
                 $output->writeln("there are no results");
                 $output->writeln("\n<--finish: " . date('Y-m-d H:i'));
                 die;
             }
             $this->pageToken = $searchResponse['nextPageToken'];
-
             foreach ($searchResponse['items'] as $item) {
                 $videoId = $item['id']['videoId'];
-
                 if (empty($videoId)) {
                     continue;
                 }
-
                 $output->writeln("Get video $videoId from youtube");
-
                 $videoDescription = $item['snippet']['description'];
                 $videoTitle = $item['snippet']['title'];
                 $thumb = empty($item['snippet']['thumbnails']['high']['url']) ? $item['snippet']['thumbnails']['medium']['url'] : $item['snippet']['thumbnails']['high']['url'];
                 $publishedAt = new \DateTime($item['snippet']['publishedAt']);
                 $video = $this->videoManager->getByYoutubeId($videoId);
-
                 if (null !== $video) {
                     $video->setChannelCode($channelKey);
                     $this->videoManager->saveVideo($video);
-
                     $output->writeln("The video $videoId is already in db");
                     continue;
                 }
-
                 $enCaption = $this->hasEnCaption($youtube, $videoId);
-
                 if (!$enCaption) {
                     $output->writeln("No english subtitles for video $videoId");
                     continue;
                 }
-
                 $video = new Video();
                 $video->setYoutubeId($videoId);
                 $video->setDescription($videoDescription);
@@ -187,29 +165,22 @@ class YoutubeParserCommand extends Command {
                 $video->setThumb($thumb);
                 $video->setTimePublish($publishedAt);
                 $video->setChannelCode($channelKey);
-
                 $this->videoManager->saveVideo($video);
                 /** @var Video $video */
                 $video = $this->videoManager->getByYoutubeId($videoId);
-
                 try {
                     $this->downloadCaption($video, $videoId);
                 } catch (\RuntimeException $e) {
                     $output->writeln("<error>{$e->getMessage()}</error>");
                 }
-
                 $output->writeln("<info>Added new video: $videoId</info>");
             }
-
             $connection = $this->em->getConnection();
-
             $output->writeln("reconnect to mysql...");
             $connection->close();
             $connection->connect();
-
             $this->checkEMConnection($this->em, $connection);
             $i++;
-
             if (empty($searchResponse['nextPageToken'])) {
                 $output->writeln("empty nextPageToken!");
                 break;
@@ -218,28 +189,22 @@ class YoutubeParserCommand extends Command {
                 $output->writeln("Iteration limit!");
                 break;
             }
-
         } while(true);
     }
-
     private function hasEnCaption(\Google_Service_YouTube $youtube, $videoId) {
         // Call the YouTube Data API's captions.list method to retrieve video caption tracks.
         $captionsQuery = $youtube->captions->listCaptions("snippet", $videoId);
-
         if (empty($captionsQuery['items'])) {
             return false;
         }
-
         foreach ($captionsQuery['items'] as $item) {
-            if ($item['snippet']['language'] == 'en') {
+            if ($item['snippet']['language'] === 'en') {
                 $exists = !empty(file_get_contents('http://video.google.com/timedtext?lang=en&v='.$videoId));
                 return $exists;
             }
         }
-
         return false;
     }
-
     function downloadCaption(Video $video, $videoId) {
         $xmlParse = new \SimpleXMLElement('http://video.google.com/timedtext?lang=en&v='.$videoId, 0, true);
         $i = 1;
@@ -253,35 +218,27 @@ class YoutubeParserCommand extends Command {
             $duration = $element->attributes()['dur']->__toString();
             $finish = $start + $duration;
             $text = $element->__toString();
-
             $vttContent .= gmdate("H:i:s", $start) . (strpos($start, '.') !== false ? substr($start, strpos($start, '.')) : '.00') . " --> " . gmdate("H:i:s", $finish) . (strpos($finish, '.') !==  false ? substr($finish, strpos($finish, '.')) : '.00') . PHP_EOL;
             $vttContent .= $this->convertSpecialSymbols($text) . PHP_EOL;
-
             $i++;
         }
         $this->parseVtt($vttContent, $video);
     }
-
     /**
      * @param $vttContent
      * @param Video $video
      */
     public function parseVtt($vttContent, Video $video) {
         $freeVtt = new VttSubtitle();
-
         $free_target = mb_substr(md5(STATIC_SERVER . time()), 0, 6) . '_t_' . mb_substr(md5($video->getYoutubeId() . time()), 0, 6) . '.vtt';
         @mkdir(VttSubtitle::$SERVER_PATH_TO_IMAGE_FOLDER . '/' . VttSubtitle::generatePath($free_target), 0777, true);
-
         $freeVtt->setFilename($free_target);
         $free_target = $freeVtt->getFilePath();
         file_put_contents($free_target, $vttContent);
-
         $freeVtt->calculateHash();
         $video->setVtt($freeVtt);
-
         $this->em->flush();
     }
-
     private function convertSpecialSymbols($text) {
         return str_replace(
             ['&quot;'],
@@ -289,7 +246,6 @@ class YoutubeParserCommand extends Command {
             htmlspecialchars_decode(html_entity_decode(preg_replace_callback("/(&#[0-9]+;)/", function($m) { return mb_convert_encoding($m[1], "UTF-8", "HTML-ENTITIES"); }, $text), ENT_QUOTES | ENT_HTML5, "UTF-8"))
         );
     }
-
     public static function delTree($dir) {
         if(!file_exists($dir)) return true;
         $files = array_diff(scandir($dir), array('.','..'));
@@ -298,7 +254,6 @@ class YoutubeParserCommand extends Command {
         }
         return rmdir($dir);
     }
-
     /**
      * method checks connection and reconnect if needed
      * MySQL Server has gone away
@@ -311,7 +266,6 @@ class YoutubeParserCommand extends Command {
     {
         if (!$em->isOpen()) {
             $config = $em->getConfiguration();
-
             $em = $em->create(
                 $connection, $config
             );
