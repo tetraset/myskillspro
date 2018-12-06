@@ -1,0 +1,75 @@
+{% extends 'MyskillsBundle:Video:base.html.twig' %}
+{% block title %}Отрывок из медиатеки: {{ episode.title }}{% endblock%}
+{% block keywords %}, отрывок из медиатеки, {{ episode.title }}{% endblock %}
+{% block description %}Смотреть отрывок из {{ episode.title }}{% endblock %}
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ asset('bundles/video/css/social-likes_birman.css') }}">
+{% endblock %}
+{% block body %}
+    <!-- Page Heading/Breadcrumbs -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Отрывок из медиатеки</h1>
+            <ol class="breadcrumb">
+                <li><a href="/">Главная</a>
+                </li>
+                <li class="active">Отрывок из медиатеки</li>
+            </ol>
+        </div>
+    </div>
+    <!-- /.row -->
+
+    {{ include('MyskillsBundle:Video:search_line.html.twig') }}
+
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <section class="box">
+                <header class="major">
+                    <h2 style="font-weight: bold; margin-bottom: 10px">{{ episode.title }}</h2>
+                    <br />
+                    <div id="share_word" class="social-likes" data-url="https://myskills.pro/videoclip/{{ episode.hash }}">
+                        <div class="facebook" title="Поделиться ссылкой на Фейсбуке">Facebook</div>
+                        <div class="twitter" data-via="anisubtv" title="Поделиться ссылкой в Твиттере">Twitter</div>
+                        <div class="mailru" title="Поделиться ссылкой в Моём мире">Мой мир</div>
+                        <div class="vkontakte" title="Поделиться ссылкой во Вконтакте">Вконтакте</div>
+                        <div class="odnoklassniki" title="Поделиться ссылкой в Одноклассниках">Одноклассники</div>
+                        <div class="plusone" title="Поделиться ссылкой в Гугл-плюсе">Google+</div>
+                        <div><a class="btn btn-default" href="#" onclick="$('#blog_code').toggle();return false;"><i class="fa fa-code" aria-hidden="true"></i> Код для блога</a></div>
+                    </div>
+                    <div id="blog_code" style="display: none">
+                        <br />
+                        <textarea onclick="this.select()" cols="15" style="width: 100%"><iframe src="http://{{ app.request.host }}/videoclip/{{ episode.hash }}?iframe=1&export=1"></iframe></textarea>
+                    </div>
+                </header>
+                <hr />
+            </section>
+
+            <script>
+                var hash_video_clip = '{{ episode.hash }}';
+            </script>
+            <!-- /.panel-heading -->
+            {{ include('MyskillsBundle:Video:video.html.twig') }}
+            <hr />
+            <br />
+        </div>
+
+        <div id="hypercomments_widget"></div>
+        <script type="text/javascript">
+            _hcwp = window._hcwp || [];
+            _hcwp.push({widget:"Stream", widget_id: 90166, xid: 'videoclip_{{ episode.id }}'});
+            (function() {
+                if("HC_LOAD_INIT" in window)return;
+                HC_LOAD_INIT = true;
+                var lang = (navigator.language || navigator.systemLanguage || navigator.userLanguage || "en").substr(0, 2).toLowerCase();
+                var hcc = document.createElement("script"); hcc.type = "text/javascript"; hcc.async = true;
+                hcc.src = ("https:" == document.location.protocol ? "https" : "http")+"://w.hypercomments.com/widget/hc/90166/"+lang+"/widget.js";
+                var s = document.getElementsByTagName("script")[0];
+                s.parentNode.insertBefore(hcc, s.nextSibling);
+            })();
+        </script>
+        <a href="http://hypercomments.com" class="hc-link" title="comments widget">comments powered by HyperComments</a>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('bundles/video/js/social-likes.min.js') }}"></script>
+{% endblock %}

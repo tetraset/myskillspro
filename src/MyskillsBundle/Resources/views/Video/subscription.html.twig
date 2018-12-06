@@ -1,0 +1,141 @@
+{% extends 'MyskillsBundle:Video:base.html.twig' %}
+{% block title %}Подписка на сервис{% endblock%}
+
+{% block body %}
+        <!-- Page Heading/Breadcrumbs -->
+        <div class="row">
+                <div class="col-lg-12">
+                        <h1 class="page-header">Подписка на сервис</h1>
+                        <ol class="breadcrumb">
+                                <li><a href="/">Главная</a>
+                                </li>
+                                <li class="active">Подписка</li>
+                        </ol>
+                </div>
+        </div>
+        <!-- /.row -->
+
+        <div class="row">
+                <div class="col-md-4">
+                        <div class="media">
+                                <div class="pull-left">
+                        <span class="fa-stack fa-2x">
+                              <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                              <i class="fa fa-users fa-stack-1x fa-inverse"></i>
+                        </span>
+                                </div>
+                                <div class="media-body">
+                                        <h4 class="media-heading">Пользовательские переводы</h4>
+                                        <p>В своем и общем словаре будут доступны переводы от других пользователей</p>
+                                </div>
+                        </div>
+                </div>
+                <div class="col-md-4">
+                        <div class="media">
+                                <div class="pull-left">
+                        <span class="fa-stack fa-2x">
+                              <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                              <i class="fa fa-book fa-stack-1x fa-inverse"></i>
+                        </span>
+                                </div>
+                                <div class="media-body">
+                                        <h4 class="media-heading">Безлимитный словарь</h4>
+                                        <p>Добавляй сколько угодно слов и выражений в свой словарь, чтобы потом изучить их</p>
+                                </div>
+                        </div>
+                </div>
+                <div class="col-md-4">
+                        <div class="media">
+                                <div class="pull-left">
+                        <span class="fa-stack fa-2x">
+                              <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                              <i class="fa fa-gamepad fa-stack-1x fa-inverse"></i>
+                        </span>
+                                </div>
+                                <div class="media-body">
+                                        <h4 class="media-heading">Unlimited games</h4>
+                                        <p>Play games as much as you want or can</p>
+                                </div>
+                        </div>
+                </div>
+        </div>
+
+        <hr />
+
+        <!-- Content Row -->
+        <div class="row">
+                <div class="col-md-3">
+                        <div class="panel panel-default text-center">
+                                <div class="panel-heading">
+                                        <h3 class="panel-title">Light</h3>
+                                </div>
+                                <div class="panel-body">
+                                        {% if old_prices is defined %}
+                                            <span class="old_price"><sup>руб.</sup><s>{{ old_prices[1] }}</s><sup>00</sup></span>
+                                        {% endif %}
+                                        <span class="price"><sup>руб.</sup>{{ prices[1] }}<sup>00</sup></span>
+                                        <span class="period">1 месяц (30 дней)</span>
+                                </div>
+                                <ul class="list-group">
+                                        <li class="list-group-item"><a href="/subscription/1" class="btn btn-primary">Оформить!</a>
+                                        </li>
+                                </ul>
+                        </div>
+                </div>
+                <div class="col-md-3">
+                        <div class="panel panel-default text-center">
+                                <div class="panel-heading">
+                                        <h3 class="panel-title">Любитель</h3>
+                                </div>
+                                <div class="panel-body">
+                                        {% if old_prices is defined %}
+                                                <span class="old_price"><sup>руб.</sup><s>{{ old_prices[3] }}</s><sup>00</sup></span>
+                                        {% endif %}
+                                        <span class="price"><sup>руб.</sup>{{ prices[3] }}<sup>00</sup></span>
+                                        <span class="period">3 месяца (90 дней)</span>
+                                </div>
+                                <ul class="list-group">
+                                        <li class="list-group-item"><a href="/subscription/3" class="btn btn-primary">Оформить!</a>
+                                        </li>
+                                </ul>
+                        </div>
+                </div>
+                <div class="col-md-3">
+                        <div class="panel panel-default text-center">
+                                <div class="panel-heading">
+                                        <h3 class="panel-title">Знаток</h3>
+                                </div>
+                                <div class="panel-body">
+                                        {% if old_prices is defined %}
+                                                <span class="old_price"><sup>руб.</sup><s>{{ old_prices[6] }}</s><sup>00</sup></span>
+                                        {% endif %}
+                                        <span class="price"><sup>руб.</sup>{{ prices[6] }}<sup>00</sup></span>
+                                        <span class="period">6 месяцев (180 дней)</span>
+                                </div>
+                                <ul class="list-group">
+                                        <li class="list-group-item"><a href="/subscription/6" class="btn btn-primary">Оформить!</a>
+                                        </li>
+                                </ul>
+                        </div>
+                </div>
+                <div class="col-md-3">
+                        <div class="panel panel-primary text-center">
+                                <div class="panel-heading">
+                                        <h3 class="panel-title">Professional <span class="label label-success">HIT</span></h3>
+                                </div>
+                                <div class="panel-body">
+                                        {% if old_prices is defined %}
+                                                <span class="old_price"><sup>руб.</sup><s>{{ old_prices[12] }}</s><sup>00</sup></span>
+                                        {% endif %}
+                                        <span class="price"><sup>руб.</sup>{{ prices[12] }}<sup>00</sup></span>
+                                        <span class="period">12 месяцев (360 дней)</span>
+                                </div>
+                                <ul class="list-group">
+                                        <li class="list-group-item"><a href="/subscription/12" class="btn btn-primary">Оформить!</a>
+                                        </li>
+                                </ul>
+                        </div>
+                </div>
+        </div>
+
+{% endblock%}

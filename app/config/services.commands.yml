@@ -1,0 +1,55 @@
+services:
+    video_cut.command:
+        class: MyskillsBundle\Command\VideoCutCommand
+        arguments:
+            - "@video.manager"
+            - "@video_clip.manager"
+            - "%web_directory%"
+            - "@video"
+            - "@doctrine.orm.entity_manager"
+        tags:
+            -  { name: console.command }
+
+    sitemap_generator.command:
+        class: MyskillsBundle\Command\SitemapCommand
+        arguments:
+            - "@dictionary_en_ru.manager"
+            - "@series.manager"
+            - "@video_clip.manager"
+            - "%web_directory%"
+        tags:
+            -  { name: console.command }
+
+    wooordhunt_ru_parser.command:
+        class: MyskillsBundle\Command\WooordhuntRuParserCommand
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@dict_source.manager"
+            - "@dictionary_en_ru.manager"
+            - "@dictionary_ru_en.manager"
+            - "%web_directory%"
+        tags:
+            -  { name: console.command }
+
+    e_books_parser.command:
+        class: MyskillsBundle\Command\EnglishEReaderNetParserCommand
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@book.manager"
+            - "%web_directory%"
+        tags:
+            -  { name: console.command }
+#
+#    mqtt_feeder.command:
+#        class: MyskillsBundle\Command\MqttPetFeederCommand
+#        tags:
+#            -  { name: console.command }
+
+    youtube_parser.command:
+        class: MyskillsBundle\Command\YoutubeParserCommand
+        arguments:
+            - "@video.manager"
+            - "@doctrine.orm.entity_manager"
+            - "%web_directory%"
+        tags:
+            -  { name: console.command }

@@ -1,0 +1,70 @@
+{% extends "SonataUserBundle:Profile:action.html.twig" %}
+
+{% block sonata_profile_content %}
+    <hr />
+    <h6>My level: {{ app.user.level }} | My score: {{ app.user.score }} | Finished games: {{ app.user.games }}</h6>
+    <hr />
+
+    <style>
+        .games-list h4, #games p {
+            padding-left: 10px;
+        }
+        .game {
+            height: 300px;
+        }
+        .games-list .nav>li>a {
+            padding: 10px 5px;
+        }
+    </style>
+
+    <img src="
+    {% if app.user.picture %}
+        {% if app.user.isUpdatedPicture %}
+        {{ app.user.picture | imagine_filter('avatar') }}
+        {% else %}
+        {{ app.user.picture }}
+        {% endif %}
+    {% else %}
+        /bundles/video/images/no_ava.png
+    {% endif %}" style="display: block;float: left;margin-right: 10px;" />
+    <div class="row row-fluid">
+        {% if app.user.biography %}
+            <div>{{ app.user.biography }}</div>
+        {% endif %}
+    </div>
+    {% if app.user.isActiveSubscription %}
+        <div class="row row-fluid" style="clear: both; padding-top: 10px; padding-left: 10px;">
+            <div class="media">
+                <div class="pull-left">
+                        <span class="fa-stack fa-2x">
+                              <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                              <i class="fa fa-calendar-check-o fa-stack-1x fa-inverse"></i>
+                        </span>
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading">Активная подписка до <strong>{{ app.user.finishSubscriptionDate|date("d.m.Y H:i") }} (Moscow)</strong></h4>
+                    <p>У вас есть подписка на следующее количество месяцев: {{ app.user.subscriptionMonths }}</p>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    <div class="row row-fluid games-list" style="clear: both; padding-top: 10px;">
+        <h4>My games</h4>
+        <ul class="nav nav-pills game_status">
+            <li role="presentation" class="active" data-status="progress" onclick="$('.game_status li').removeClass('active');$(this).addClass('active');game.showGames();return false;"><a href="#" onclick="return false">In progress <span class="badge" id="progress">0</span></a></li>
+            <li role="presentation" data-status="finished"onclick="$('.game_status li').removeClass('active');$(this).addClass('active');game.showGames();return false;"><a href="#" onclick="return false">Finished <span class="badge" id="finished">0</span></a></li>
+            <li role="presentation" data-status="abandoned" onclick="$('.game_status li').removeClass('active');$(this).addClass('active');game.showGames();return false;"><a href="#" onclick="return false;">Abandoned <span class="badge" id="abandoned">0</span></a></li>
+        </ul>
+        <hr />
+        <div id="games" class="row">
+            <p class="text-center" id="game_loader"><img src="/bundles/video/images/ajax-loader.gif" /></p>
+        </div>
+    </div>
+
+    <script src="{{ asset('bundles/video/js/game.js?58') }}"></script>
+    <script>
+        $(function () {
+            game.getStats();
+        });
+    </script>
+{% endblock %}

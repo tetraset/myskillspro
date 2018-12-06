@@ -1,0 +1,119 @@
+{% extends 'MyskillsBundle:Video:base.html.twig' %}
+{% block title %}Учим английский язык онлайн по книгам{% endblock%}
+{% block description %}Сервис изучения английского языка по книгам с помощью интерактивных субтитров{% endblock %}
+
+{% block header %}
+
+{% endblock %}
+{% block body %}
+        <!-- Marketing Icons Section -->
+        <!-- Call to Action Section -->
+        <div class="well">
+                <div class="row">
+                        <div class="col-md-12">
+                                <h1 style="text-align: center; font-size: 1.5em; margin-top: .5em;">Учим английский язык онлайн по книгам</h1>
+                        </div>
+                </div>
+        </div>
+
+        <style>
+                .select2-container {
+                        width: auto !important;
+                        min-width: 250px;
+                }
+                .img-portfolio img {
+                        margin: 0 auto;
+                        width: 176px;
+                }
+        </style>
+
+        {{ include('MyskillsBundle:Video:search_line.html.twig') }}
+
+        <!-- Header Carousel -->
+        <div class="row" style="padding: 20px 0 0; text-align: center;">
+                <div id="filter_block" class="container form-inline" style="display: none; margin: 0 auto; max-width: 970px;">
+                        <div class="form-group">
+                                <script type="text/javascript">
+                                        $(function() {
+                                                var level_search = $(".level_search");
+                                                level_search.select2({
+                                                        maximumSelectionSize: 3
+                                                });
+                                                level_search.change(function(){
+                                                        levels = level_search.val();
+                                                        $('.series').remove();
+                                                        show_more('/', 1);
+                                                });
+                                        });
+                                </script>
+
+                                <select class="level_search form-control" multiple="multiple" data-tags="false" data-placeholder="Levels" data-allow-clear="true">
+                                        {% for l in levels %}
+                                                <option value="{{ l }}">{{ l }}</option>
+                                        {% endfor %}
+                                </select>
+                        </div>
+
+                        <div class="form-group">
+                                <script type="text/javascript">
+                                        $(function() {
+                                                var genre_search = $(".genre_search");
+                                                genre_search.select2({
+                                                        maximumSelectionSize: 3
+                                                });
+                                                genre_search.change(function(){
+                                                        genres = genre_search.val();
+                                                        $('.series').remove();
+                                                        show_more('/', 1);
+                                                });
+                                        });
+                                </script>
+
+                                <select class="genre_search form-control" multiple="multiple" data-tags="false" data-placeholder="Genres" data-allow-clear="true">
+                                        {% for g in genres %}
+                                                <option value="{{ g }}">{{ g }}</option>
+                                        {% endfor %}
+                                </select>
+                        </div>
+
+                        <div class="form-group">
+                                <script type="text/javascript">
+                                        $(function() {
+                                                var length_search = $(".lengths_search");
+                                                length_search.select2({
+                                                        maximumSelectionSize: 3
+                                                });
+                                                length_search.change(function(){
+                                                        lengths = length_search.val();
+                                                        $('.series').remove();
+                                                        show_more('/', 1);
+                                                });
+                                        });
+                                </script>
+
+                                <select class="lengths_search form-control" multiple="multiple" data-tags="false" data-placeholder="Length" data-allow-clear="true">
+                                        {% for l in lengths %}
+                                                <option value="{{ l }}">{{ l }}</option>
+                                        {% endfor %}
+                                </select>
+                        </div>
+                </div>
+                <div style="max-width: 900px; margin: 0 auto; padding: 0 15px">
+                        <p><a class="btn btn-default btn-block" href="#" onclick="$('#filter_block').show();$(this).remove();return false;"><i class="fa fa-filter" aria-hidden="true"></i> Filters</a></p>
+                </div>
+        </div>
+
+        <div class="row">
+                <div class="col-lg-12">
+                        <h2 style="margin: 10px 0 20px;" class="page-header">Book library</h2>
+                </div>
+        </div>
+        <!-- /.row -->
+
+        <!-- Portfolio Section -->
+        <div class="row" id="results">
+                {{ include('MyskillsBundle:Video:books_list.html.twig') }}
+        </div>
+        <!-- /.row -->
+
+{% endblock%}

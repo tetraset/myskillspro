@@ -1,0 +1,45 @@
+<script src="{{ asset('bundles/video/js/vtt.min.js') }}"></script>
+<script src="{{ asset('bundles/video/js/video.min.js') }}"></script>
+<script src="{{ asset('bundles/video/js/Youtube.min.js') }}"></script>
+<script src="{{ asset('bundles/video/js/videojs-abloop.min.js') }}"></script>
+<script src="{{ asset('bundles/video/js/videojs-contrib-hls.min.js') }}"></script>
+<script src="//cdn.sc.gl/videojs-hotkeys/latest/videojs.hotkeys.min.js"></script>
+<script>
+        videojs.options.flash.swf = "http://{{ app.request.host }}/bower_components/video.js/dist/video-js.swf";
+        window.HELP_IMPROVE_VIDEOJS = false;
+</script>
+<script>
+        $(function(){
+                $.ajaxSetup({
+                    data: {'csrf_token':'{{ csrf_token }}', 'csrf_prefix':'{{ csrf_prefix }}'}
+                });
+        });
+</script>
+
+<!-- Content Row -->
+<div class="row">
+        <!-- Content Column -->
+        <div id="episode" class="col-md-12">
+                <section class="box special video_section">
+                        <header class="major" style="text-align: center">
+                            {{ include('MyskillsBundle:Video:video_player.html.twig') }}
+                            {% if type == 'clip' %}
+                                <hr />
+                                <p style="text-align: left"><a class="play_button" href="#" onclick="$('#sub_dialog').hide();return changeVideo('{{ video_link }}');"><i class="fa fa-play-circle" aria-hidden="true"></i> Слушать конкретную фразу</a></p>
+                                <p style="text-align: left"><a class="play_button" href="#" onclick="$('#sub_dialog').show();return changeVideo('{{ video_link_full }}');"><i class="fa fa-play-circle" aria-hidden="true"></i>  Слушать весь диалог</a></p>
+                                <hr />
+                                <div id="subtitles" style="text-align: left"><strong>{{ episode.subSearchText|raw }}</strong>{% if episode.ruSubSearchText %}<p>{{ episode.ruSubSearchText }}</p>{% endif %}<span id="sub_dialog" style="display: none"><hr />{{ episode.subText|raw }}</span></div>
+                            {% elseif type == 'game' %}
+                                <hr />
+                                <div id="subtitles" style="text-align: left"><span id="sub_dialog"></span></div>
+                            {% else %}
+                                <div id="subtitles"></div>
+                            {% endif %}
+                        </header>
+                </section>
+        </div>
+</div>
+{{ include('MyskillsBundle:Video:add_update_translation_modal.html.twig') }}
+<script src="{{ asset('bundles/video/js/video_resize.js?9') }}"></script>
+<script src="{{ asset('bundles/video/js/jquery.selection.js?6') }}"></script>
+<script src="{{ asset('bundles/video/js/main.js?400') }}"></script>

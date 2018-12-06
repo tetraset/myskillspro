@@ -1,0 +1,21 @@
+{% if series|length %}
+    {% for s in series %}
+            <div class="col-md-2 img-portfolio series">
+                <a href="/{{ s.slug }}/{{ s.code }}">
+                    <img class="img-responsive img-hover" title="учить английский язык онлайн" src="{% if s.getPoster %}{% path s.getPoster, 'big' %}{% else %}{{ s.posterUrl }}{% endif %}" alt="{% if s.ruTitle %}{{ s.ruTitle }}{% else %}{{ s.enTitle }}{% endif %}">
+                </a>
+                <h3>
+                    <a href="/{{ s.slug }}/{{ s.code }}">{% if s.enTitle %}{{ s.enTitle|raw }}{% else %}{{ s.ruTitle|raw }}{% endif %}</a>
+                </h3>
+            </div>
+    {% endfor %}
+    {% if is_more %}
+        <div class="next">
+            <a href="#" class="button" onclick="show_more('/', {{ page }});return false;">Показать еще &rarr;</a>
+        </div>
+    {% endif %}
+{% else %}
+    <div class="col-md-12 img-portfolio series">
+        <p style="color: #999">Ничего не удалось найти... Попробуйте другой запрос</p>
+    </div>
+{% endif %}

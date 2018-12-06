@@ -1,0 +1,11 @@
+{% if folders|length > 0 %}
+{% for f in folders %}
+        <div class="panel panel-default dictionary-word">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <input class="remove_flag" type="checkbox" name="checkedFolders[]" value="{{ f.id }}" />&nbsp;&nbsp;<i class="glyphicon glyphicon-folder-open" title="Папка"></i>&nbsp;&nbsp;<a href="/dictionary/{{ f.id }}">{{ f.title }} (Слов и выражений: {{ f.userWordsCnt }})</a>
+                </h4>
+            </div>
+        </div>
+{% endfor %}
+{% endif %}

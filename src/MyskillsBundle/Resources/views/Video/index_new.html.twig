@@ -1,0 +1,118 @@
+{% extends 'MyskillsBundle:Video:base.html.twig' %}
+{% block title %}Media game for improving English skills{% endblock%}
+{% block description %}Media game for improving English skills. Watch & listen dialogs from an episode and after that try to write them by yourselves{% endblock %}
+
+{% block header %}
+    <script src="{{ asset('bundles/video/js/video.min.js') }}"></script>
+    <script src="{{ asset('bundles/video/js/Youtube.min.js') }}"></script>
+    <script src="{{ asset('bundles/video/js/videojs-abloop.min.js') }}"></script>
+    <form id="new_game" method="post">
+        <div class="video-responsive">
+            <video id="current_video" class="video video-js vjs-default-skin" autoplay muted data-setup='{ "techOrder": ["youtube"], "sources": [{ "type": "video/youtube", "src": "https://www.youtube.com/watch?v={{ youtube_id }}"}], "youtube": { "ytControls": 0, "autoplay": 1, "loop": 1, "iv_load_policy": 0, "showinfo": 0 } }'></video>
+            <div id="over_video">
+                <p>Would you play with me?</p>
+                <h1 style="font-size: 3vw">The <span style="color: #5cb85c">media game</span> for improving English skills</h1>
+
+                <section class="box" id="game_scene" style="z-index: 500">
+                    <header class="major">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
+                            <input type="hidden" name="csrf_prefix" value="{{ csrf_prefix }}" />
+                            <input type="hidden" name="start" value="1" />
+
+                        <input onclick="$('#new_game').submit();$(this).attr('disabled', 'disabled');$(this).val('Creating new game...');" class="btn btn-success btn-lg" type="submit" value="Let's go!">
+                    </header>
+                </section>
+            </div>
+        </div>
+
+        <div class="modal fade row" id="settings" tabindex="-1" role="dialog" aria-labelledby="Game settings">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">My game settings</h4>
+                    </div>
+                    <div class="modal-body">
+                        {{ include('MyskillsBundle:Video:game_settings.html.twig') }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success" onclick="$('#new_game').submit();$(this).attr('disabled', 'disabled');$(this).html('Creating new game...');">Play the game!</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+{% block body %}
+
+    <style>
+        hr, .social_block {
+            display: none;
+        }
+        .footer_block {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            background: #fff;
+            margin: 0;
+        }
+        .footer_block p {
+            margin: 0;
+            padding: 0 10px;
+            text-align: center;
+        }
+        body {
+            background: #000;
+        }
+        .select2-container {
+            width: 100% !important;
+        }
+    </style>
+
+    <script>
+
+        function randomInteger(min, max) {
+            var rand = min - 0.5 + Math.random() * (max - min + 1)
+            rand = Math.round(rand);
+            return rand;
+        }
+
+        var start = randomInteger(10,100);
+
+        var video = videojs("current_video",{
+            plugins: {
+                abLoopPlugin: {
+                    start:start    	//in seconds - defaults to 0
+                    ,end:start+200    	//in seconds. Set to  false to loop to end of video. Defaults to false
+                    ,enabled:true			//defaults to false
+                    ,loopIfBeforeStart:false //allow video to play normally before the loop section? defaults to true
+                    ,loopIfAfterEnd:true	// defaults to true
+                    ,pauseAfterLooping: false     	//if true, after looping video will pause. Defaults to false
+                    ,pauseBeforeLooping: false     	//if true, before looping video will pause. Defaults to false
+                    ,createButtons: false		//defaults to true
+                }
+            }
+        });
+
+        video.abLoopPlugin.playLoop();
+        video.play();
+        var isIOS = /iPad|iPhone|iPod/.test(navigator.platform);
+
+        if (isIOS) {
+            $(function () {
+                $('#current_video').delete();
+                $('.video-responsive').css('height', 'auto').css('top', '22%').css('background-image', '{{ thumb }}');
+                $('#over_video').css('top', '22%');
+
+            });
+        }else {
+
+            // Use HTML5 video
+            document.querySelectorAll('.canvas')[0].style.display = 'none';
+
+        }
+
+    </script>
+
+{% endblock%}

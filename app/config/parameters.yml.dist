@@ -1,0 +1,47 @@
+# This file is a "template" of what your parameters.yml file should look like
+# Set parameters here that may be different on each deployment target of the app, e.g. development, staging, production.
+# http://symfony.com/doc/current/best_practices/configuration.html#infrastructure-related-configuration
+parameters:
+    database_host:     127.0.0.1
+    database_port:     ~
+    database_name:     symfony
+    database_user:     root
+    database_password: ~
+    # You should uncomment this if you want use pdo_sqlite
+    # database_path: "%kernel.root_dir%/data.db3"
+    locale: ru
+
+    mailer_transport:  smtp
+    mailer_host:       127.0.0.1
+    mailer_user:       ~
+    mailer_password:   ~
+    mailer_encryption: ssl
+    mailer_auth_mode: login
+    mailer_port: 465
+
+    # A secret key that's used to generate certain security-related tokens
+    secret:            ThisTokenIsNotSoSecretChangeIt
+
+    # parameters for xmon_sonata_media_provider_video
+    ffmpeg_dir: /var/www/bin/ffmpeg
+    ffprobe_dir: /var/www/bin/ffprobe
+
+    # social network for auth
+    fb_client_id:     id
+    fb_client_secret: secret
+    fb_scope:         scope
+    tw_key: key
+    tw_secret: secret
+    vk_client_id: id
+    vk_client_secret: secret
+    vk_scope: scope
+    bing_client_id: myskills_jp
+    bing_client_secret: MMw5r2GE9qUDAPpdW4uy44PgxY/z/SgdaKk4ay962eY=
+    bing_grant_type: client_credentials
+    yandex_api_key: trnsl.1.1.20160529T080540Z.bd9dcfcbbc96d4f2.79e484a38743ca14f699cf5df9d41b36139ac73b
+    robokassa_pass1: pass1
+    robokassa_pass2: pass2
+    robokassa_pass1_test: pass1_test
+    robokassa_pass2_test: pass2_test
+    robokassa_shop_id: shop_id
+    yandex_disk_token: yandex_disk_token

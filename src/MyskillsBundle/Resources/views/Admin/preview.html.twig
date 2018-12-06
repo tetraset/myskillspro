@@ -1,0 +1,25 @@
+{% extends 'SonataAdminBundle:CRUD:edit.html.twig' %}
+
+{% use 'SonataAdminBundle:CRUD:base_edit_form.html.twig' with form as parentForm %}
+
+{% block templateContent %}
+    {% set article = object %}
+
+    {{ parent() }}
+
+    <div class="sonata-preview-form">
+        {{ block('parentForm') }}
+    </div>
+
+{% endblock %}
+
+{% block formactions %}
+    <button class="btn btn-success" type="submit" name="btn_preview_approve">
+        <i class="glyphicon glyphicon-ok"></i>
+        {{ 'btn_preview_approve'|trans({}, 'SonataAdminBundle') }}
+    </button>
+    <button class="btn btn-danger" type="submit" name="btn_preview_decline">
+        <i class="glyphicon glyphicon-remove"></i>
+        {{ 'btn_preview_decline'|trans({}, 'SonataAdminBundle') }}
+    </button>
+{% endblock %}

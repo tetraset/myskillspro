@@ -1,0 +1,122 @@
+{% extends 'MyskillsBundle:Video:base.html.twig' %}
+{% block title %}{{ word }}{% endblock%}
+{% block keywords %}, {{ word }} перевод{% endblock %}
+{% block description %}Перевод слова {{ word }} из {{ translations_cnt }} источника(ов){% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('bundles/video/css/social-likes_birman.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/video/css/jquery-ui.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/video/css/jquery-ui.structure.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/video/css/jquery-ui.theme.min.css?1') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/video/css/word.css?6') }}">
+{% endblock %}
+
+{% block body %}
+    <script>
+        var csrfData = {'csrf_token':'{{ csrf_token }}', 'csrf_prefix':'{{ csrf_prefix }}'};
+        $(function(){
+            $.ajaxSetup({
+                data: csrfData
+            });
+        });
+    </script>
+    <!-- Page Heading/Breadcrumbs -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Результаты поиска по словарю</h1>
+            <ol class="breadcrumb">
+                <li><a href="/">Главная</a>
+                </li>
+                <li class="active">Словарь</li>
+            </ol>
+        </div>
+    </div>
+    <!-- /.row -->
+
+    {{ include('MyskillsBundle:Video:search_line.html.twig') }}
+
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <section class="box">
+                <header class="major">
+                    <h2 style="font-weight: bold; margin-bottom: 10px"><button data-id_word="{{ id_word }}" title="Добавить слово себе в словарь" class="add_word btn btn-default">+</button>&nbsp;{{ word }}</h2>
+                    {% if audioList|length %}
+                        <ul class="graphic">
+                            {% for audio in audioList %}
+                                <li><a href="{{ audio.audioUrl }}">{{ audio.word }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    <p style="clear: both; padding-top: 10px">Переводов: {{ translations_cnt }}</p>
+                    <br />
+                    <div id="share_word" class="social-likes" data-url="https://myskills.pro/{{ lang }}/{{ word }}">
+                        <div class="facebook" title="Поделиться ссылкой на Фейсбуке">Facebook</div>
+                        <div class="twitter" data-via="anisubtv" title="Поделиться ссылкой в Твиттере">Twitter</div>
+                        <div class="mailru" title="Поделиться ссылкой в Моём мире">Мой мир</div>
+                        <div class="vkontakte" title="Поделиться ссылкой во Вконтакте">Вконтакте</div>
+                        <div class="odnoklassniki" title="Поделиться ссылкой в Одноклассниках">Одноклассники</div>
+                        <div class="plusone" title="Поделиться ссылкой в Гугл-плюсе">Google+</div>
+                    </div>
+                </header>
+                <hr />
+            </section>
+
+            <div id="accordion">
+                {% for key,translation in translations %}
+                    <h3 class="translation-panel-{{ translation.idTranslation }}" id="translation_{{ key }}">
+                        {% if translation.loginUser %}
+                            {% if app.user and translation.idUser == app.user.id %}
+                                Мой перевод
+                            {% else %}
+                                Пользовательский перевод
+                            {% endif %}
+                        {% else %}
+                            {{ translation.source.source|raw }}
+                        {% endif %}
+                    </h3>
+                    <div class="translation-panel-{{ translation.idTranslation }}">
+                        {{ translation.htmlTranslation|raw }}
+
+                        {% if app.user and translation.idUser == app.user.id %}
+                            <p style='text-align: right;'><button class="btn btn-default btn-xs btn-remove" onclick="removeTranslation({{ translation.idTranslation }});return false;">Удалить свой перевод</button></p>
+                        {% endif %}
+                        <p style='text-align: right; color: #ccc; font-size: .7em'>
+                        {% if translation.loginUser %}
+                            Перевел: {{ translation.loginUser }}
+                        {% else %}
+                            {{ translation.source.source }}
+                        {% endif %}
+                        </p>
+                        <p style='text-align: right;'><a href="#" onclick="$('#translation_{{ key }}').trigger('click');return false;">Свернуть</a></p>
+                    </div>
+                {% endfor %}
+            </div>
+            <p style='text-align: left; margin-top: 10px'><button class="btn btn-primary" onclick="addOwnTranslation('{{ word }}', false);return false;">Добавить свой перевод</button></p>
+        </div>
+    </div>
+    <div class="row">
+        <div id="hypercomments_widget"></div>
+        <script type="text/javascript">
+            _hcwp = window._hcwp || [];
+            _hcwp.push({widget:"Stream", widget_id: 90166, xid: 'word_{{ id_word }}'});
+            (function() {
+                if("HC_LOAD_INIT" in window)return;
+                HC_LOAD_INIT = true;
+                var lang = (navigator.language || navigator.systemLanguage || navigator.userLanguage || "en").substr(0, 2).toLowerCase();
+                var hcc = document.createElement("script"); hcc.type = "text/javascript"; hcc.async = true;
+                hcc.src = ("https:" == document.location.protocol ? "https" : "http")+"://w.hypercomments.com/widget/hc/90166/"+lang+"/widget.js";
+                var s = document.getElementsByTagName("script")[0];
+                s.parentNode.insertBefore(hcc, s.nextSibling);
+            })();
+        </script>
+        <a href="http://hypercomments.com" class="hc-link" title="comments widget">comments powered by HyperComments</a>
+    </div>
+    {{ include('MyskillsBundle:Video:add_update_translation_modal.html.twig') }}
+{% endblock%}
+{% block javascripts %}
+    <script src="{{ asset('bundles/video/js/readmore.min.js') }}"></script>
+    <script src="{{ asset('bundles/video/js/jquery-ui.min.js') }}"></script>
+    <script src="{{ asset('bundles/video/js/word.js?13') }}"></script>
+    <script src="{{ asset('bundles/video/js/social-likes.min.js') }}"></script>
+    <script src="{{ asset('bower_components/SoundManager2/script/soundmanager2-jsmin.js') }}"></script>
+{% endblock %}

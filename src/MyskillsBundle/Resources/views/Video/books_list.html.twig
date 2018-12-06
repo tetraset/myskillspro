@@ -1,0 +1,21 @@
+{% if books|length %}
+    {% for b in books %}
+            <div class="col-md-2 img-portfolio series">
+                <a href="/book/{{ b.code }}">
+                    <img class="img-responsive img-hover" title="учить английский язык онлайн" src="{{ b.posterUrl }}" alt="{{ b.title }}">
+                </a>
+                <h3>
+                    <a href="/book/{{ b.code }}">{{ b.author }} "{{ b.title }}"</a>
+                </h3>
+            </div>
+    {% endfor %}
+    {% if is_more %}
+        <div class="next">
+            <a href="#" class="button" onclick="show_more('/', {{ page }});return false;">Показать еще &rarr;</a>
+        </div>
+    {% endif %}
+{% else %}
+    <div class="col-md-12 img-portfolio series">
+        <p style="color: #999">Ничего не удалось найти... Попробуйте другой запрос</p>
+    </div>
+{% endif %}

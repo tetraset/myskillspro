@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>{% block title %}{% endblock %}</title>
+        <meta name="description" content="{% block description %}{% endblock %}" />
+        {% if app.environment != 'prod' or no_index is defined %}
+            <meta name="robots" content="none"/>
+        {% else %}
+            <meta name="robots" content="all"/>
+        {% endif %}
+        {{ include('MyskillsBundle:Video:head.html.twig') }}
+        {% block stylesheets %}{% endblock %}
+    </head>
+    <body>
+
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function (d, w, c) {
+            (w[c] = w[c] || []).push(function() {
+                try {
+                    w.yaCounter34846645 = new Ya.Metrika({
+                        id:34846645,
+                        clickmap:true,
+                        trackLinks:true,
+                        accurateTrackBounce:true,
+                        webvisor:true
+                    });
+                } catch(e) { }
+            });
+
+            var n = d.getElementsByTagName("script")[0],
+                    s = d.createElement("script"),
+                    f = function () { n.parentNode.insertBefore(s, n); };
+            s.type = "text/javascript";
+            s.async = true;
+            s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+            if (w.opera == "[object Opera]") {
+                d.addEventListener("DOMContentLoaded", f, false);
+            } else { f(); }
+        })(document, window, "yandex_metrika_callbacks");
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/34846645" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="background-color: #fff; border-color: #eee">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a style="padding: 0" class="navbar-brand" href="/"><img alt="myskills.pro" title="На главную" style="border:0; height: 50px;" src="/logo.png?4" /></a>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <form class="navbar-form navbar-left" action="/search">
+                        <div class="form-group">
+                            <button style="display: block; float: right" class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+                            <input type="hidden" name="target" value="dictionary" />
+                            <input style="width: 80%" name="s" placeholder="Dictionary search" type="text" value="" class="form-control">
+                        </div>
+                    </form>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="/game" title="tv games">Game</a>
+                        </li>
+                        <li>
+                            <a href="/faq" title="часто задаваемые вопросы">F.A.Q.</a>
+                        </li>
+                        {% if app.user.username is defined %}
+                            <li>
+                                <a href="/dictionary">{{ 'link_dictionary'|trans({}, 'SonataUserBundle') }}</a>
+                            </li>
+                            <li class="dropdown">
+                                <a href="/profile/" class="dropdown-toggle" data-toggle="dropdown">
+                                    {% if app.user.firstname %}
+                                        {{ app.user.firstname }}{% if app.user.lastname %} {{ app.user.lastname }}{% endif %}
+                                    {% else %}
+                                        {{ app.user.username }}
+                                    {% endif %} <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="/profile/">{{ 'title_user_account'|trans({}, 'SonataUserBundle') }}</a>
+                                    </li>
+                                    <li>
+                                        <a href="/profile/edit-profile">{{ 'link_edit_profile'|trans({}, 'SonataUserBundle') }}</a>
+                                    </li>
+                                    <li>
+                                        <a href="/logout">{{ 'link_logout'|trans({}, 'SonataUserBundle') }}</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        {% else %}
+                            <li class="active">
+                                <a href="/login">{{ 'link_login'|trans({}, 'SonataUserBundle') }}</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container -->
+        </nav>
+
+        <!-- Page Header -->
+        <!-- Set your background image for this header on the line below. -->
+        {% block header %}{% endblock %}
+
+        <!-- Main Content -->
+        <div class="container">
+            {% block body %}{% endblock %}
+
+            <hr>
+
+            <div class="row social_block">
+
+                <div class="col-lg-12">
+                    <h4 style="margin-top: 0">We're in social networks</h4>
+                    <script type="text/javascript" src="//vk.com/js/api/openapi.js?136"></script>
+                    <!-- VK Widget -->
+                    <div style="margin: 0 auto;" id="vk_groups"></div>
+                    <script type="text/javascript">
+                        VK.Widgets.Group("vk_groups", {mode: 3, height: "200", width: "290"}, 70737009);
+                    </script>
+                </div>
+            </div>
+
+            <hr>
+
+            <!-- Footer -->
+            <footer class="footer_block">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p class="copyright text-muted">{{ "now"|date('Y', timezone="Europe/Moscow") }} &copy; myskills.pro. All rights reserved. Contacts: help@myskills.pro <a href="/terms">terms</a></p>
+                    </div>
+                </div>
+            </footer>
+            {{ include('MyskillsBundle:Video:footer.html.twig') }}
+        </div>
+
+
+        {% block javascripts %}{% endblock %}
+
+        {% if indexPage is defined %}
+            <script type="text/javascript">
+                var reformalOptions = {
+                    project_id: 977283,
+                    project_host: "myskillspro.reformal.ru",
+                    tab_orientation: "right",
+                    tab_indent: "50%",
+                    tab_bg_color: "#9d2c31",
+                    tab_border_color: "#FFFFFF",
+                    tab_image_url: "http://tab.reformal.ru/U3VnZ2VzdGlvbnMgYW5kIGJ1Z3M=/FFFFFF/94f6a9ae86d26980def2d807457e6298/right/1/tab.png",
+                    tab_border_width: 0
+                };
+
+                (function() {
+                    var script = document.createElement('script');
+                    script.type = 'text/javascript'; script.async = true;
+                    script.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'media.reformal.ru/widgets/v3/reformal.js';
+                    document.getElementsByTagName('head')[0].appendChild(script);
+                })();
+            </script><noscript><a href="http://reformal.ru"><img src="http://media.reformal.ru/reformal.png" /></a><a href="http://myskillspro.reformal.ru">Suggestions and bugs</a></noscript>
+        {% endif %}
+    </body>
+</html>

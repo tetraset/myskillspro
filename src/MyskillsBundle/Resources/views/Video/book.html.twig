@@ -1,0 +1,134 @@
+{% extends 'MyskillsBundle:Video:base.html.twig' %}
+{% block title %}Читать {{ book.author }} «{{ book.title }}» в оригинале с интерактивным переводом{% endblock%}
+{% block keywords %}, читать {{ book.title }}, {{ book.author }}, {{ book.author }} {{ book.title }} перевод{% endblock %}
+{% block description %}{{ book.description }}{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('bundles/video/css/social-likes_birman.css') }}">
+{% endblock %}
+
+{% block body %}
+
+    <style>
+        .poster {
+            margin: 0 auto;
+            width: 176px;
+        }
+    </style>
+
+    <script>
+        $(function(){
+            $.ajaxSetup({
+                data: {'csrf_token':'{{ csrf_token }}', 'csrf_prefix':'{{ csrf_prefix }}'}
+            });
+        });
+        var bookCode =  '{{ book.code }}';
+    </script>
+    <script src="/bundles/video/js/book.js?7"></script>
+    <style>
+        .bookContent {
+            font-size: 18px;
+            line-height: 2;
+        }
+        .bookContent .word {
+            color: #000;
+            font-weight: normal;
+        }
+        .bookContent .word:hover {
+            background: #000;
+            color: #fff;
+        }
+    </style>
+    <!-- Page Heading/Breadcrumbs -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header" title="{{ book.title }}">{{ book.title }}
+                <small>{{ book.author }}</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li class="active">{{ book.title }}</li>
+                <li class="active">{{ book.genre }}</li>
+                <li class="active">{{ book.level }}</li>
+                <li class="active">{{ book.length }}</li>
+                {% if book.source %}<li class="active">the book is taken from <a href="{{ book.source|raw }}" target="_blank">{{ book.source }}</a></li>{% endif %}
+            </ol>
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <!-- Intro Content -->
+    <div class="row">
+        <div class="col-md-2">
+            <img class="img-responsive poster" src="{{ book.posterUrl }}" title="{{ book.title }}">
+        </div>
+        <div class="col-md-10">
+            <ul class="nav nav-tabs nav-description">
+                <li role="presentation"><a href="#">En</a></li>
+            </ul>
+            <p id="en_desc" class="series_desc" style="display: none">
+                {{ book.description|raw }}
+            </p>
+
+            <script>
+                $(function(){
+                    $('.nav-description li').eq(0).addClass('active');
+                    $('.series_desc').eq(0).show();
+                    $('.nav-description li a').click(function(){
+                        $('.nav-description li').removeClass('active');
+                        $('.series_desc').hide();
+                        var el = $(this);
+                        el.parent().addClass('active');
+                        $('#' + el.text().toLowerCase() + '_desc').show();
+                        return false;
+                    });
+                });
+            </script>
+
+            <div id="share_word" class="social-likes" data-url="https://myskills.pro/book/{{ book.code }}">
+                <div class="facebook" title="Поделиться ссылкой на Фейсбуке">Facebook</div>
+                <div class="twitter" data-via="anisubtv" title="Поделиться ссылкой в Твиттере">Twitter</div>
+                <div class="mailru" title="Поделиться ссылкой в Моём мире">Мой мир</div>
+                <div class="vkontakte" title="Поделиться ссылкой во Вконтакте">Вконтакте</div>
+                <div class="odnoklassniki" title="Поделиться ссылкой в Одноклассниках">Одноклассники</div>
+                <div class="plusone" title="Поделиться ссылкой в Гугл-плюсе">Google+</div>
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <hr />
+
+    <!-- Service Tabs -->
+    <div class="row">
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+            <div class="tab-content bookContent" id="subtitles">
+                {{ book.getFormattedContent|raw }}
+            </div>
+            <hr />
+            <div id="hypercomments_widget"></div>
+            <script type="text/javascript">
+                _hcwp = window._hcwp || [];
+                _hcwp.push({widget:"Stream", widget_id: 90166, xid: 'book_{{ book.id }}_{{ book.code }}'});
+                (function() {
+                    if("HC_LOAD_INIT" in window)return;
+                    HC_LOAD_INIT = true;
+                    var lang = (navigator.language || navigator.systemLanguage || navigator.userLanguage || "en").substr(0, 2).toLowerCase();
+                    var hcc = document.createElement("script"); hcc.type = "text/javascript"; hcc.async = true;
+                    hcc.src = ("https:" == document.location.protocol ? "https" : "http")+"://w.hypercomments.com/widget/hc/90166/"+lang+"/widget.js";
+                    var s = document.getElementsByTagName("script")[0];
+                    s.parentNode.insertBefore(hcc, s.nextSibling);
+                })();
+            </script>
+            <a href="http://hypercomments.com" class="hc-link" title="comments widget">comments powered by HyperComments</a>
+        </div>
+    </div>
+
+    {{ include('MyskillsBundle:Video:add_update_translation_modal.html.twig') }}
+    <script src="{{ asset('bundles/video/js/jquery.selection.js?6') }}"></script>
+    <script src="{{ asset('bundles/video/js/main.js?421') }}"></script>
+        
+{% endblock%}
+{% block javascripts %}
+    <script src="{{ asset('bundles/video/js/social-likes.min.js') }}"></script>
+{% endblock %}

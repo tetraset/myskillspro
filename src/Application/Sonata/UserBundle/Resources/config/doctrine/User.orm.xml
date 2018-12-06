@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="Application\Sonata\UserBundle\Entity\User" table="fos_user_user">
+
+        <indexes>
+            <index name="vkontakteId" columns="vkontakte_id"/>
+            <index name="facebookId" columns="facebook_id"/>
+            <index name="twitterId" columns="twitter_id"/>
+            <index name="subscriptionMonths" columns="subscription_months"/>
+            <index name="subscriptionStart" columns="subscription_start"/>
+        </indexes>
+
+        <id name="id" column="id" type="integer">
+            <generator strategy="AUTO" />
+        </id>
+
+        <field name="vkontakteId" column="vkontakte_id" type="integer" nullable="true" />
+
+        <field name="vkontakteAccessToken" column="vkontakte_access_token" length="255" type="string" unique="true" nullable="true" />
+
+        <field name="facebookId" column="facebook_id" type="integer" nullable="true" />
+
+        <field name="facebookAccessToken" column="facebook_access_token" length="255" type="string" unique="true" nullable="true"/>
+
+        <field name="twitterId" column="twitter_id" type="integer" nullable="true" />
+
+        <field name="twitterAccessToken" column="twitter_access_token" length="255" type="string" unique="true" nullable="true" />
+
+        <field name="picture" column="picture" length="255" type="string" nullable="true" />
+
+        <field name="isUpdatedPicture" column="is_updated_picture" type="boolean">
+            <options>
+                <option name="default">0</option>
+            </options>
+        </field>
+
+        <field name="score" column="score" type="integer" nullable="false">
+            <options>
+                <option name="default">0</option>
+            </options>
+        </field>
+
+        <field name="level" column="level" type="integer" nullable="false">
+            <options>
+                <option name="default">1</option>
+            </options>
+        </field>
+
+        <field name="games" column="games" type="integer" nullable="false">
+            <options>
+                <option name="default">0</option>
+            </options>
+        </field>
+
+        <field name="subscriptionMonths" column="subscription_months" type="integer">
+            <options>
+                <option name="default">0</option>
+            </options>
+        </field>
+
+        <field name="subscriptionStart" column="subscription_start" type="datetime" nullable="true" />
+
+        <field name="withoutHardsub" column="without_hardsub" type="boolean">
+            <options>
+                <option name="default">0</option>
+            </options>
+        </field>
+
+        <field name="countryIds" column="country_ids" length="255" type="string" nullable="true" />
+        <field name="genreIds" column="genre_ids" length="255" type="string" nullable="true" />
+        <field name="seriesIds" column="series_ids" length="255" type="string" nullable="true" />
+
+        <field name="hints" column="hints" type="integer" nullable="false">
+            <options>
+                <option name="default">0</option>
+            </options>
+        </field>
+
+        <attribute-overrides>
+            <attribute-override name="email">
+                <field name="email" column="email" length="255" type="string" nullable="true" />
+            </attribute-override>
+            <attribute-override name="emailCanonical">
+                <field name="emailCanonical" column="email_canonical" length="255" type="string" unique="true" nullable="true" />
+            </attribute-override>
+        </attribute-overrides>
+
+    </entity>
+
+</doctrine-mapping>

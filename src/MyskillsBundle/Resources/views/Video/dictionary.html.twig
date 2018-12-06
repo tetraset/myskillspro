@@ -1,0 +1,85 @@
+{% extends 'MyskillsBundle:Video:base.html.twig' %}
+{% block title %}Мой словарь{% endblock%}
+
+{% block body %}
+    <script>
+        $(function(){
+            $.ajaxSetup({
+                data: {'csrf_token':'{{ csrf_token }}', 'csrf_prefix':'{{ csrf_prefix }}'}
+            });
+        });
+    </script>
+    <!-- Page Heading/Breadcrumbs -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Мой словарь</h1>
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <script>
+        $(function(){
+           $('.remove_flag').click(function(){
+               if($('.remove_flag:checked').length) {
+                    $('#relocate_panel').show();
+               } else {
+                   $('#relocate_panel').hide();
+               }
+           });
+        });
+    </script>
+
+    {% if id_folder %}
+        <div class="row">
+            <div class="col-lg-12">
+                <ol class="breadcrumb">
+                    <li class="active"><a onclick="window.history.back(); return false;" href="#">Назад</a></li>
+                    <li><a href="/dictionary">На главную словаря</a></li>
+                </ol>
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- Content Row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="form-group">
+                <form method="post">
+                    <p class="input-group"><input class="form-control" placeholder="Название новой папки" type="text" name="new_folder" value="" /> <span class="input-group-btn"><button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-plus"></i> Создать папку</button></span></p>
+                </form>
+            </div>
+            <form method="post">
+            <div class="panel-group" id="accordion">
+                {{ include('MyskillsBundle:Video:folders_list.html.twig') }}
+                {{ include('MyskillsBundle:Video:words_list.html.twig') }}
+            </div>
+                {% if words|length > 0 or folders|length > 0 %}
+                    <div class="form-group col-lg-12" id="relocate_panel">
+                        <p class="input-group">
+                            <span class="input-group-btn"><button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-level-up"></i> Переместить выбранное в</button></span>
+                            <select class="form-control" name="targetLocation">
+                                <option value="-1">Папки для перемещения</option>
+                                <option value="0">Главная страница словаря</option>
+                                {% if folders|length > 0 %}
+                                    {% for f in folders %}
+                                        <option value="{{ f.id }}">{{ f.title }}</option>
+                                    {% endfor %}
+                                {% endif %}
+                            </select>
+                        </p>
+                        <p style="text-align: right; margin-top: 10px"><button class="btn btn-primary" type="submit"><i class="glyphicon glyphicon-trash"></i> Удалить выбранное</button></p>
+                    </div>
+                {% endif %}
+            </form>
+            <!-- /.panel-group -->
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    {{ include('MyskillsBundle:Video:add_update_translation_modal.html.twig') }}
+        
+{% endblock%}
+{% block javascripts %}
+    <script src="{{ asset('bundles/video/js/readmore.min.js') }}"></script>
+    <script src="{{ asset('bundles/video/js/dictionary.js?10') }}"></script>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% if words|length > 0 %}
+{% for w in words %}
+        <div class="panel panel-default dictionary-word">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <input class="remove_flag" type="checkbox" name="checkedWords[]" value="{{ w.id }}" />&nbsp;&nbsp;<i class="glyphicon glyphicon-text-background" title="Слово или выражение"></i>&nbsp;&nbsp;<a id="click_collapse{{ w.id }}" class="accordion-toggle" data-toggle="collapse" href="#collapse{{ w.id }}">{{ w.enWord.word }} (Переводов: {{ w.enWord.totalPublicTranslations }})</a>
+                </h4>
+            </div>
+            <div id="collapse{{ w.id }}" class="panel-collapse collapse">
+                <div class="panel-body">
+                    {% for key,translation in w.enWord.publicTranslationsWithoutLimit|slice(0,1) %}
+                        <div class="translation-panel-{{ translation.idTranslation }}">
+                            {{ translation.htmlTranslation|raw }}
+
+                            {% if app.user and translation.idUser == app.user.id %}
+                                <p style='text-align: right;'><button class="btn btn-default btn-xs btn-remove" onclick="removeTranslation({{ translation.idTranslation }});return false;">Удалить свой перевод</button></p>
+                            {% endif %}
+                            <p style='text-align: right; color: #ccc; font-size: .8em'>
+                                {% if translation.loginUser %}
+                                    Перевел: {{ translation.loginUser }}
+                                {% else %}
+                                    {{ translation.source.source }}
+                                {% endif %}
+                            </p>
+                            <hr />
+                        </div>
+                    {% endfor %}
+                    <br /><p style='text-align: center'><a style='color: #999' target='_blank' href='/en/{{ w.enWord.word }}'>Найти еще в словарях</a></p>
+                    <p style='text-align: left;'><button class="btn btn-default" onclick="addOwnTranslation('{{ w.enWord.word }}', true);return false;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Добавить свой перевод</button></p>
+                    <p style='text-align: right;'><a href="#" onclick="$('#click_collapse{{ w.id }}').trigger('click');return false;">Свернуть</a></p>
+                </div>
+            </div>
+        </div>
+{% endfor %}
+    {% if is_more %}
+        <div class="next">
+            <a href="#" class="button" onclick="show_more_words({{ page }});return false;">Show me more &rarr;</a>
+        </div>
+    {% endif %}
+{% elseif folders|length == 0 %}
+    <p style="color: #eee">Вы пока ничего не добавляли сюда...</p>
+{% endif %}

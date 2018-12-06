@@ -1,0 +1,39 @@
+{% extends 'MyskillsBundle:Video:base.html.twig' %}
+{% block title %}New game{% endblock%}
+{% block keywords %}, new game, start game{% endblock %}
+{% block description %}Play our game to enjoy studying English{% endblock %}
+{% block body %}
+    <!-- Page Heading/Breadcrumbs -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Play new game</h1>
+            <ol class="breadcrumb">
+                <li><a href="/">Main</a>
+                </li>
+                <li class="active">New game</li>
+            </ol>
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <section class="box" id="game_scene">
+                <header class="major">
+                    <form id="new_game" method="post" style="margin: 20px auto;">
+
+                        <p style="text-align: center"><img style="width: 100%" src="/iron-throne.jpg" /></p>
+
+                        {{ include('MyskillsBundle:Video:game_settings.html.twig') }}
+
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
+                        <input type="hidden" name="csrf_prefix" value="{{ csrf_prefix }}" />
+                        <input type="hidden" name="start" value="1" />
+
+                        <input onclick="$('#new_game').submit();$(this).attr('disabled', 'disabled');$(this).val('Creating new game...');" class="btn btn-success btn-lg btn-block" type="submit" value="Start the media game!">
+                    </form>
+                </header>
+            </section>
+        </div>
+    </div>
+{% endblock %}

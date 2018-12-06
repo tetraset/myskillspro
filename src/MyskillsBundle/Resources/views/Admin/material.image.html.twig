@@ -1,0 +1,13 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.poster is defined and object.poster is empty %}
+        &nbsp;<img src="{{ object.posterUrl }}" alt="" style="max-width: 200px" />
+    {% else %}
+        {% if object.thumb is defined %}
+            <img src="{{ object.thumb }}" alt="" style="max-width: 200px" />
+        {% else %}
+            <img src="{% if object.getPoster %}{% path object.getPoster, 'small' %}{% else %}{{ object.posterUrl }}{% endif %}" alt="" style="max-width: 200px" />
+        {% endif %}
+    {% endif %}
+{% endblock %}

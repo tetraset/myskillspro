@@ -1,0 +1,35 @@
+{% extends 'MyskillsBundle:Video:base.html.twig' %}
+{% block title %}Регистрация{% endblock%}
+
+{% block body %}
+    {% if app.user.username is defined %}
+        <div class="panel panel-success">
+        <div class="panel-heading">
+            <h2 class="panel-title"><img id="loader" src="/bundles/video/images/ajax-loader.gif" /> Перенаправляю в профиль...</h2>
+        </div>
+        </div>
+        <script>
+            location.href = "/profile/";
+        </script>
+    {% else %}
+        <script src="{{ asset('bundles/video/js/registration.js?2') }}"></script>
+
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h2 class="panel-title">{{ 'title_user_registration'|trans({}, 'SonataUserBundle') }}</h2>
+            </div>
+            <div class="panel-body">
+                <form action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST" class="fos_user_registration_register form-horizontal">
+
+                    {{ form_widget(form) }}
+
+                    <div class="form-group" style="text-align: center"><p>Регистрируясь на сайте, вы соглашаетесь с <a target="_blank" href="/terms">правилами сайта</a></p></div>
+
+                    <div class="form-actions">
+                        <input type="submit" value="{{ 'registration.submit'|trans({}, 'FOSUserBundle') }}" class="btn btn-success pull-left col-md-offset-2" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    {% endif %}
+{% endblock body %}

@@ -1,0 +1,61 @@
+{% extends 'MyskillsBundle:Video:base.html.twig' %}
+{% block title %}Покупка подписки{% endblock%}
+
+{% block body %}
+<!-- Page Heading/Breadcrumbs -->
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Покупка подписки</h1>
+    </div>
+</div>
+<!-- /.row -->
+
+<!-- Content Row -->
+<div class="row">
+<div class="col-lg-12">
+    {% if app.user.isActiveSubscription %}
+    <p>У вас уже имеется активная подписка</p>
+    <hr />
+    <div>
+        <div class="media">
+            <div class="pull-left">
+                    <span class="fa-stack fa-2x">
+                          <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                          <i class="fa fa-calendar-check-o fa-stack-1x fa-inverse"></i>
+                    </span>
+            </div>
+            <div class="media-body">
+                <h4 class="media-heading">Активная подписка до <strong>{{ app.user.finishSubscriptionDate|date("d.m.Y H:i") }} (Moscow)</strong></h4>
+                <p>У вас есть подписка на следующее количество месяцев: {{ app.user.subscriptionMonths }}</p>
+            </div>
+        </div>
+        <hr />
+        {% else %}
+            <script>
+                $(function () {
+                    $('form').submit();
+                })
+            </script>
+            <form method="GET" action="https://merchant.roboxchange.com/Index.aspx">
+                <input type="hidden" name="MrchLogin" value="{{ m_shop }}">
+                <input type="hidden" name="OutSum" value="{{ m_amount }}">
+                <input type="hidden" name="Desc" value="{{ m_desc }}">
+                <input type="hidden" name="SignatureValue" value="{{ sign }}">
+                <input type="hidden" name="Shp_item" value="{{ term }}">
+                <input type="hidden" name="Culture" value="ru" />
+                <input type="hidden" name="Shp_id" value="{{ m_id }}">
+                <input type="hidden" name="Shp_hash" value="{{ my_hash }}">
+                <input type="hidden" name="IncCurrLabel" value="{{ IncCurrLabel }}">
+                {% if app.request.query.get("tetra_test") %}
+                <input type="hidden" name="IsTest" value="1">
+                {% endif %}
+                <p>Подождите немного...</p>
+            </form>
+        {% endif %}
+        <!-- /.panel-group -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+
+{% endblock%}

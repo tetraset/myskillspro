@@ -1,0 +1,85 @@
+{% extends 'MyskillsBundle:Video:base.html.twig' %}
+{% block title %}{% if app.user.isActiveSubscription %}Подписка уже активна{% else %}Способ оплаты{% endif %}{% endblock%}
+
+{% block body %}
+<!-- Page Heading/Breadcrumbs -->
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">{% if app.user.isActiveSubscription %}Подписка уже активна{% else %}Способ оплаты{% endif %}</h1>
+    </div>
+</div>
+<!-- /.row -->
+
+<!-- Content Row -->
+<div class="row">
+<div class="col-lg-12">
+    {% if app.user.isActiveSubscription %}
+    <p>У вас уже имеется активная подписка</p>
+    <hr />
+    <div>
+        <div class="media">
+            <div class="pull-left">
+                    <span class="fa-stack fa-2x">
+                          <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                          <i class="fa fa-calendar-check-o fa-stack-1x fa-inverse"></i>
+                    </span>
+            </div>
+            <div class="media-body">
+                <h4 class="media-heading">Активная подписка до <strong>{{ app.user.finishSubscriptionDate|date("d.m.Y H:i") }} (Moscow)</strong></h4>
+                <p>У вас есть подписка на следующее количество месяцев: {{ app.user.subscriptionMonths }}</p>
+            </div>
+        </div>
+        <hr />
+        {% else %}
+            <form method="GET" action="/subscription/{{ term }}/purchase">
+                {% if app.request.query.get("tetra_test") %}
+                <input type="hidden" name="tetra_test" value="1">
+                {% endif %}
+                {% if app.request.query.get("tetra_price") %}
+                    <input type="hidden" name="tetra_price" value="{{ app.request.query.get("tetra_price") }}">
+                {% endif %}
+                <h3>Вы приобретаете подписку на следующее количество месяцев: <strong>{{ term }}</strong>. Сумма к оплате: <strong>{{ price }}</strong> руб.</h3>
+                {% if payMethods|length %}
+                    <p>Выберите способ оплаты:</p>
+                    <p></p><select class="form-control input-lg" name="IncCurrLabel">
+                        {% for p in payMethods %}
+                            <option{% if p.code == 'BankCard' %} selected="selected"{% endif %} value="{{ p.code }}">{{ p.title }}</option>
+                        {% endfor %}
+                    </select></p>
+                {% endif %}
+                <p><input class="btn btn-primary" type="submit" value="Продолжить"></p>
+            </form>
+            <hr />
+            {% if promo is null %}
+                <form method="POST" class="form-inline">
+                    <div class="form-group" style="width: 100%;">
+                        <p>Активировать промо-код:</p>
+                        <div class="input-group" style="width: 100%;">
+                            <input class="form-control col-sm-2 control-label" name="promo_code" placeholder="Промо-код" type="text" value="">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="submit">Активировать</button>
+                            </span>
+                        </div>
+                    </div>
+                </form>
+             {% else %}
+                <div class="media">
+                    <div class="pull-left">
+                        <span class="fa-stack fa-2x">
+                              <i class="fa fa-circle fa-stack-2x text-primary"></i>
+                              <i class="fa fa-barcode fa-stack-1x fa-inverse"></i>
+                        </span>
+                    </div>
+                     <div class="media-body">
+                         <h4 class="media-heading" style="margin-top: 10px;">Активирован промо-код на <strong>{{ promo.discountPercent }}</strong>% скидку</h4>
+                     </div>
+                </div>
+            {% endif %}
+        {% endif %}
+        <!-- /.panel-group -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+
+{% endblock%}

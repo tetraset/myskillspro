@@ -1,0 +1,128 @@
+xmon_sonata_media_provider_video:
+    ffmpeg_binary: "%ffmpeg_dir%" # Required, ffmpeg binary path
+    ffprobe_binary: "%ffprobe_dir%" # Required, ffprobe binary path
+    binary_timeout: 0 # Optional, default 60
+    threads_count: 4 # Optional, default 4
+    config:
+        image_frame: 5 # Optional, default 10, Can not be empty. Where the second image capture
+        video_width: 640 # Optional, default 640, Can not be empty. Video proportionally scaled to this width
+    formats:
+        mp4: true # Optional, default true, generate MP4 format
+        ogg: true # Optional, default true, generate OGG format
+        webm: true # Optional, default true, generate WEBM format
+
+sonata_media:
+    default_context: default
+    db_driver: doctrine_orm # or doctrine_mongodb, doctrine_phpcr
+    providers:
+        image:
+            service:    sonata.media.provider.image
+            resizer:    sonata.media.resizer.simple # sonata.media.resizer.square
+            filesystem: sonata.media.filesystem.local
+            cdn:        sonata.media.cdn.server
+            generator:  sonata.media.generator.default
+            thumbnail:  sonata.media.thumbnail.format
+            allowed_extensions: ['jpg', 'png', 'jpeg']
+            allowed_mime_types: ['image/pjpeg', 'image/jpeg', 'image/png', 'image/x-png']
+    contexts:
+        default:  # the default context is mandatory
+            providers:
+                - sonata.media.provider.image
+
+            formats:
+                small: { width: 165 , quality: 90}
+                wide: { width: 360, quality: 90 }
+                big:   { width: 555 , quality: 90}
+
+    cdn:
+        server:
+            path: /uploads/media # http://media.sonata-project.org/
+
+    filesystem:
+        local:
+            directory:  %kernel.root_dir%/../web/uploads/media
+            create:     false
+
+#
+# The LiipImagineBundle can be used if you want to convert on demand an image
+# to a specific format. (ie a controller render the file)
+#    more information can be found here : https://github.com/liip/LiipImagineBundle
+#
+liip_imagine:
+    resolvers:
+         default:
+            web_path:
+                cache_prefix: uploads/media/cache
+
+    filter_sets:
+        avatar:
+            quality: 75
+            filters:
+                relative_resize: { widen: 200 }
+#
+#        # this configuration match the sonata_media configuration format definition
+#        sonata_product_preview:
+#            quality: 75
+#            controller_action: 'SonataMediaBundle:Media:liipImagineFilter'
+#            filters:
+#                thumbnail: { size: [100, 100], mode: outbound }
+#
+#        sonata_product_small:
+#            quality: 75
+#            controller_action: 'SonataMediaBundle:Media:liipImagineFilter'
+#            filters:
+#                thumbnail: { size: [200, 100], mode: outbound }
+#
+#        sonata_product_large:
+#            quality: 75
+#            controller_action: 'SonataMediaBundle:Media:liipImagineFilter'
+#            filters:
+#                thumbnail: { size: [600, 100], mode: outbound }
+#
+#        news_abstract:
+#            quality: 75
+#            controller_action: 'SonataMediaBundle:Media:liipImagineFilter'
+#            filters:
+#                thumbnail: { size: [100, 100], mode: outbound }
+#
+#        news_wide:
+#            quality: 75
+#            controller_action: 'SonataMediaBundle:Media:liipImagineFilter'
+#            filters:
+#                thumbnail: { size: [820, 100], mode: outbound }
+#
+#        sonata_collection_preview:
+#            quality: 75
+#            controller_action: 'SonataMediaBundle:Media:liipImagineFilter'
+#            filters:
+#                thumbnail: { size: [100, 100], mode: outbound }
+#
+#        sonata_collection_wide:
+#            quality: 75
+#            controller_action: 'SonataMediaBundle:Media:liipImagineFilter'
+#            filters:
+#                thumbnail: { size: [820, 100], mode: outbound }
+#
+#        sonata_category_preview:
+#            quality: 75
+#            controller_action: 'SonataMediaBundle:Media:liipImagineFilter'
+#            filters:
+#                thumbnail: { size: [100, 100], mode: outbound }
+#
+#        sonata_category_wide:
+#            quality: 75
+#            controller_action: 'SonataMediaBundle:Media:liipImagineFilter'
+#            filters:
+#                thumbnail: { size: [820, 100], mode: outbound }
+#
+#        default_small:
+#            quality: 75
+#            controller_action: 'SonataMediaBundle:Media:liipImagineFilter'
+#            filters:
+#                thumbnail: { size: [100, 100], mode: outbound }
+#
+#        default_big:
+#            quality: 75
+#            controller_action: 'SonataMediaBundle:Media:liipImagineFilter'
+#            filters:
+#                thumbnail: { size: [820, 70], mode: outbound }

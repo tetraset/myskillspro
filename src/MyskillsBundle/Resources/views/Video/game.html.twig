@@ -1,0 +1,92 @@
+{% extends 'MyskillsBundle:Video:base.html.twig' %}
+{% block title %}Active game{% endblock%}
+{% block keywords %}, active game{% endblock %}
+{% block description %}Play our game to enjoy studying English{% endblock %}
+{% block body %}
+    <!-- Page Heading/Breadcrumbs -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 class="page-header" style="margin: 10px 0;">Active game</h3>
+            <div id="proccess_game" class="progress" style="display: none">
+                <div class="progress-bar progress-bar-success  progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                    0% Complete
+                </div>
+            </div>
+            {% if videoWatched == false %}
+                <h4 id="timer_game2" style="margin: 10px 0;">Time limit for watching the video</h4>
+                <div id="timer_game" class="progress">
+                    <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="100" aria-valuemin="1000" aria-valuemax="100" style="width: 100%">
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <style>
+        .video_section {
+            width: 60%;
+            margin: 0 auto;
+        }
+        .word {
+            color: #000;
+            z-index: 1;
+        }
+        .word:hover {
+            background: #000;
+        }
+    </style>
+
+    <div class="row" id="player_video">
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+            {{ include('MyskillsBundle:Video:video.html.twig') }}
+            <p class="start_game" class="bg-warning" style="text-align: center; padding: 10px;{% if videoWatched %} display: none{% endif %}">Watch and remember dialogs from the video <strong>until the top red timer is over</strong>. When you will be ready, click the button.</p>
+            <button onclick="game.playNextClip();" class="start_game btn btn-success btn-lg btn-block"{% if videoWatched %} style="display: none"{% endif %}>I'm ready. Let's go!</button>
+
+            <div id="game_elements"{% if videoWatched == false %} style="display: none"{% endif %}>
+                <p class="bg-primary" style="text-align: center; padding: 10px;">Watch and write down a dialog from the video. The hint below will help you.</p>
+                {% if app.user and app.user.hints %}<button id="show_hint_btn" style="display: none; float: right" onclick="game.showHint();" title="Show original text (only {{ app.user.hints }} attempts)" class="btn btn-info" type="submit"><i class="fa fa-eye" aria-hidden="true"></i></button>{% endif %}
+                <blockquote style="font-size: 14px"></blockquote>
+                <textarea placeholder="Your variant" class="form-control" rows="3" style="margin: 10px auto"></textarea>
+                <button id="check_result_btn" onclick="game.checkResult()" class="btn btn-info btn-lg btn-block">Check my result</button>
+            </div>
+
+            <div id="game_result" style="display: none">
+                <p class="bg-primary" id="percent" style="text-align: center; padding: 10px; color: #000">The percentage of correctness: <code>0%</code></p>
+                <p class="bg-primary" id="errors" style="text-align: center; padding: 10px; color: #000">The number of errors: <code>0</code></p>
+                <h4 style="text-align: center">Your variant</h4>
+                <pre id="result" style="text-align: center; padding: 10px;"></pre>
+                <h4 style="text-align: center">Correct text</h4>
+                <div id="subtitles">
+                    <pre id="correct_text" style="text-align: center; padding: 10px;"></pre>
+                </div>
+                <hr />
+                <button onclick="game.playNextClip()" class="btn btn-info btn-lg btn-block">The next step</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ asset('bundles/video/js/game.js?54') }}"></script>
+    <script>
+        game.total_clips = {{ countClips }};
+        game.current_clip_index = {{ clip_index }};
+        game.hash = '{{ hash }}';
+        game.time_limit = {{ timeLimit }};
+        game.start = {{ start }};
+        game.finish = {{ finish }};
+        var hash_video_clip = '';
+        $(function () {
+            {% if videoWatched %}
+                game.playNextClip();
+            {% else %}
+                game.initTimer();
+                game.loopVideo(game.start, game.finish);
+            {% endif %}
+        });
+    </script>
+
+    <div class="row" id="game_loader" style="display: none">
+        <p style="text-align: center"><img src="/bundles/video/images/ajax-loader.gif" /></p>
+    </div>
+{% endblock %}

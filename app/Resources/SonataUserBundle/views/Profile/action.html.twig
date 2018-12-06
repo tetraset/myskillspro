@@ -1,0 +1,37 @@
+{% extends 'MyskillsBundle:Video:base.html.twig' %}
+{% block title %}
+    {% if app.user.firstname %}
+        {{ app.user.firstname }}{% if app.user.lastname %} {{ app.user.lastname }}{% endif %}
+    {% else %}
+        {{ app.user.username }}
+    {% endif %}
+{% endblock%}
+
+{% block body %}
+{% block sonata_page_breadcrumb %}
+    {% if breadcrumb_context is not defined %}
+        {% set breadcrumb_context = 'user_index' %}
+    {% endif %}
+    <div class="row-fluid clearfix">
+        {{ sonata_block_render_event('breadcrumb', { 'context': breadcrumb_context, 'current_uri': app.request.requestUri }) }}
+    </div>
+{% endblock %}
+
+<h2>{% block sonata_profile_title %}
+        {% if app.user.firstname %}
+            {{ app.user.firstname }}{% if app.user.lastname %} {{ app.user.lastname }}{% endif %}
+        {% else %}
+            {{ app.user.username }}
+        {% endif %}
+    {% endblock %}</h2>
+
+<div class="sonata-user-show">
+
+    <div>
+        {% include 'SonataCoreBundle:FlashMessage:render.html.twig' %}
+
+        {% block sonata_profile_content '' %}
+    </div>
+
+</div>
+{% endblock body %}

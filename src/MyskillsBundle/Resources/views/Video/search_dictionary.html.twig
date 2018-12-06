@@ -1,0 +1,16 @@
+{% if results|length %}
+{% for result in results %}
+    <div class="col-md-12 series">
+        <p style="font-size: 20px; line-height: 1.5;"><a style="color: black" href='/{{ w_lang }}/{{ result.word }}?s={{ app.request.query.get("s") }}&target=dictionary'>{{ result.word }}</a></p>
+    </div>
+{% endfor %}
+    {% if is_more %}
+        <div class="next">
+            <a href="#" class="button" onclick="show_more('/search', {{ p }}, '{{ s }}', '{{ app.request.query.get("target") }}');return false;">Показать еще &rarr;</a>
+        </div>
+    {% endif %}
+{% else %}
+    <div class="col-md-12 img-portfolio series">
+        <p style="color: #999">Ничего не удалось найти... Попробуйте другой запрос</p>
+    </div>
+{% endif %}

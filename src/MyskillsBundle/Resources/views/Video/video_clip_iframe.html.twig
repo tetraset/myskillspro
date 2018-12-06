@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>{{ episode.title }}</title>
+    {{ include('MyskillsBundle:Video:head.html.twig') }}
+</head>
+<body style="padding-top: 0">
+    {% if export %}
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="background-color: #fff; border-color: #eee">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a style="padding: 0" class="navbar-brand" href="/"><img alt="anisub.tv" title="На главную" style="border:0; height: 50px;" src="/logo.png?1" /></a>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        {% if app.user.username is defined %}
+                            <li>
+                                <a target="_blank" href="/dictionary">{{ 'link_dictionary'|trans({}, 'SonataUserBundle') }}</a>
+                            </li>
+                        {% else %}
+                            <li class="active">
+                                <a target="_blank" href="/login">{{ 'link_login'|trans({}, 'SonataUserBundle') }}</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container -->
+        </nav>
+    {% endif %}
+
+    <!-- Main Content -->
+    <div class="container"{% if export %} style="margin-top: 40px"{% endif %}>
+        <!-- Service Tabs -->
+        <div class="row">
+            <script>
+                var hash_video_clip = '{{ episode.hash }}';
+            </script>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="tab-content">
+                    {{ include('MyskillsBundle:Video:video.html.twig') }}
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        {{ include('MyskillsBundle:Video:footer.html.twig') }}
+    </div>
+</body>
+</html>

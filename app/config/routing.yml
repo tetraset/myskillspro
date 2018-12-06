@@ -1,0 +1,144 @@
+admin_area:
+    resource: "@SonataAdminBundle/Resources/config/routing/sonata_admin.xml"
+    prefix: /admin
+
+_sonata_admin:
+    resource: .
+    type: sonata_admin
+    prefix: /admin
+
+sonata_user:
+    resource: '@SonataUserBundle/Resources/config/routing/admin_security.xml'
+    prefix: /admin
+
+sonata_user_admin_security:
+    resource: '@SonataUserBundle/Resources/config/routing/admin_security.xml'
+    prefix: /admin
+
+gallery:
+    resource: '@SonataMediaBundle/Resources/config/routing/gallery.xml'
+    prefix: /media/gallery
+
+media:
+    resource: '@SonataMediaBundle/Resources/config/routing/media.xml'
+    prefix: /media
+
+_liip_imagine:
+    resource: "@LiipImagineBundle/Resources/config/routing.xml"
+
+sonata_cache_cache:
+    resource: '@SonataCacheBundle/Resources/config/routing/cache.xml'
+    prefix: /
+
+sonata_user_security:
+    resource: "@SonataUserBundle/Resources/config/routing/sonata_security_1.xml"
+
+sonata_user_resetting:
+    resource: "@SonataUserBundle/Resources/config/routing/sonata_resetting_1.xml"
+    prefix: /resetting
+
+sonata_user_profile:
+    resource: "@SonataUserBundle/Resources/config/routing/sonata_profile_1.xml"
+    prefix: /profile
+
+sonata_user_register:
+    resource: "@SonataUserBundle/Resources/config/routing/sonata_registration_1.xml"
+    prefix: /register
+
+sonata_user_change_password:
+    resource: "@SonataUserBundle/Resources/config/routing/sonata_change_password_1.xml"
+    prefix: /profile
+
+#HWIOAuthBundle routes
+hwi_oauth_security:
+    resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
+    prefix: /connect
+
+hwi_oauth_connect:
+    resource: "@HWIOAuthBundle/Resources/config/routing/connect.xml"
+    prefix: /login
+
+hwi_oauth_redirect:
+    resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
+    prefix:   /login
+
+facebook_login:
+    path: /login/check-facebook
+
+# anisub service controllers
+
+main:
+    resource: "@MyskillsBundle/Controller/MediaController.php"
+    type:     annotation
+    options:
+        expose: true
+
+series:
+    resource: "@MyskillsBundle/Controller/SeriesController.php"
+    type:     annotation
+    options:
+        expose: true
+
+books:
+    resource: "@MyskillsBundle/Controller/BookController.php"
+    type:     annotation
+    options:
+        expose: true
+
+video_clip:
+    resource: "@MyskillsBundle/Controller/VideoClipController.php"
+    type:     annotation
+    options:
+        expose: true
+
+dictionary:
+    resource: "@MyskillsBundle/Controller/DictionaryController.php"
+    type:     annotation
+    options:
+        expose: true
+
+game:
+    resource: "@MyskillsBundle/Controller/GameController.php"
+    type:     annotation
+    options:
+        expose: true
+
+search:
+    resource: "@MyskillsBundle/Controller/SearchController.php"
+    type:     annotation
+    options:
+        expose: true
+
+api_translation:
+    resource: "@MyskillsBundle/Controller/ApiTranslationController.php"
+    type:     annotation
+    options:
+        expose: true
+
+user_dictionary:
+    resource: "@MyskillsBundle/Controller/UserDictionaryController.php"
+    type:     annotation
+    options:
+        expose: true
+
+user:
+    resource: "@MyskillsBundle/Controller/UserController.php"
+    type:     annotation
+    options:
+        expose: true
+
+subscription:
+    resource: "@MyskillsBundle/Controller/SubscriptionController.php"
+    type:     annotation
+    options:
+        expose: true
+
+error:
+    resource: "@MyskillsBundle/Controller/ErrorController.php"
+    type:     annotation
+    options:
+        expose: true
+
+
+
+

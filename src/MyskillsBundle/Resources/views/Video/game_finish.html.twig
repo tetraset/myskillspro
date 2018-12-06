@@ -1,0 +1,143 @@
+{% extends 'MyskillsBundle:Video:base.html.twig' %}
+{% block title %}Game results{% endblock%}
+{% block keywords %}, game results, new game{% endblock %}
+{% block description %}Play our game to enjoy studying English{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('bundles/video/css/social-likes_birman.css') }}">
+{% endblock %}
+{% block body %}
+    <!-- Page Heading/Breadcrumbs -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 class="page-header" style="margin: 10px 0;">Game results</h3>
+            <ol class="breadcrumb">
+                <li><a href="/">Main</a>
+                </li>
+                <li class="active">Results</li>
+            </ol>
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <style>
+        table {
+            width: 100%;
+        }
+        td {
+            padding: 10px;
+            border: 1px solid #eee;
+            font-size: 16px;
+        }
+    </style>
+
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <section class="box" id="game_scene">
+                <header class="major">
+                    <form id="new_game" method="post" action="/game" style="margin: 10px auto">
+
+                        <p style="text-align: center"><img style="width: 100%" src="{% if thumb %}{{ thumb }}{% else %}/iron-throne.jpg{% endif %}" /></p>
+
+                        <br />
+                        <div id="share_word" class="social-likes" data-url="https://myskills.pro/game/{{ hash }}/finish">
+                            <div class="facebook" title="Поделиться ссылкой на Фейсбуке">Facebook</div>
+                            <div class="twitter" data-via="anisubtv" title="Поделиться ссылкой в Твиттере">Twitter</div>
+                            <div class="mailru" title="Поделиться ссылкой в Моём мире">Мой мир</div>
+                            <div class="vkontakte" title="Поделиться ссылкой во Вконтакте">Вконтакте</div>
+                            <div class="odnoklassniki" title="Поделиться ссылкой в Одноклассниках">Одноклассники</div>
+                            <div class="plusone" title="Поделиться ссылкой в Гугл-плюсе">Google+</div>
+                        </div>
+
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
+                        <input type="hidden" name="csrf_prefix" value="{{ csrf_prefix }}" />
+                        <input type="hidden" name="start" value="1" />
+
+                        <h3 style="text-align: center">Game results</h3>
+
+                        {% if new_level %}
+                            <p class="bg-success" style="text-align: center; padding: 10px; font-size: 16px">Congratulations! You have reached a new level!</p>
+                            <hr />
+                        {% endif %}
+
+                        {% if penalty %}
+                            <p class="bg-danger" style="text-align: center; padding: 10px;">Sorry, exceeded time for watching the first introductory video</p>
+                        {% endif %}
+
+                        <div class="table-responsive">
+                            <table class="table-striped">
+                                <tr class="{% if total_percent >= score_percent_limit %}success{% else %}danger{% endif %}">
+                                    <td>The average percentage of correctness</td>
+                                    <td><code>{{ total_percent }}%</code></td>
+                                </tr>
+                                <tr class="{% if percent_errors < score_percent_limit/2 %}success{% else %}danger{% endif %}">
+                                    <td>The number of errors</td>
+                                    <td><code>{{ total_errors }} ({{ percent_errors }}%)</code></td>
+                                </tr>
+                                <tr>
+                                    <td>Game score</td>
+                                    <td><code>{{ score }}</code></td>
+                                </tr>
+                                {% if app.user and app.user.id == idUser %}
+                                    <tr>
+                                        <td>Your current level</td>
+                                        <td>{{ app.user.level }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Your current score</td>
+                                        <td>{{ app.user.score }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Progress of your experience</td>
+                                        <td>
+                                            <div class="progress">
+                                                <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="{{ level_percent }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ level_percent }}%">
+                                                    <span class="sr-only">{{ level_percent }}% Complete</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% elseif user %}
+                                    <tr>
+                                        <td>User</td>
+                                        <td>{{ user.username }}</td>
+                                    </tr>
+                                {% endif %}
+                            </table>
+                        </div>
+
+                        {{ include('MyskillsBundle:Video:game_settings.html.twig') }}
+
+                        <hr />
+
+                        {% if penalty == false %}
+                        <input onclick="$('#new_game').attr('action', '/game/{{ hash }}/create');$('#new_game').submit();$(this).attr('disabled', 'disabled');$(this).val('Creating new game...');" class="btn btn-default btn-lg btn-block" type="submit" value="Play this game again!">
+                        {% endif %}
+
+                        <input onclick="$('#new_game').submit();$(this).attr('disabled', 'disabled');$(this).val('Creating new game...');" class="btn btn-success btn-lg btn-block" type="submit" value="Start the new media game!">
+
+                    </form>
+                </header>
+            </section>
+        </div>
+    </div>
+    <div class="row">
+        <div id="hypercomments_widget"></div>
+        <script type="text/javascript">
+            _hcwp = window._hcwp || [];
+            _hcwp.push({widget:"Stream", widget_id: 90166, xid: 'game_{{ hash }}'});
+            (function() {
+                if("HC_LOAD_INIT" in window)return;
+                HC_LOAD_INIT = true;
+                var lang = (navigator.language || navigator.systemLanguage || navigator.userLanguage || "en").substr(0, 2).toLowerCase();
+                var hcc = document.createElement("script"); hcc.type = "text/javascript"; hcc.async = true;
+                hcc.src = ("https:" == document.location.protocol ? "https" : "http")+"://w.hypercomments.com/widget/hc/90166/"+lang+"/widget.js";
+                var s = document.getElementsByTagName("script")[0];
+                s.parentNode.insertBefore(hcc, s.nextSibling);
+            })();
+        </script>
+        <a href="http://hypercomments.com" class="hc-link" title="comments widget">comments powered by HyperComments</a>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('bundles/video/js/social-likes.min.js') }}"></script>
+{% endblock %}

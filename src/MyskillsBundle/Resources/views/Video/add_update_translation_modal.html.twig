@@ -1,0 +1,21 @@
+<div class="modal fade" id="addUpdateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" style="z-index: 1071">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Добавление своего перевода</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="message-text" class="control-label">Перевод:</label>
+                    <textarea class="form-control" id="translation-text"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+                <button id="addUpdateModalButton" type="button" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Добавить</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{{ asset('bundles/video/js/my_translation.js?10') }}"></script>
