@@ -2,11 +2,12 @@
 namespace MyskillsBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use MyskillsBundle\Controller\MediaController;
 
 // юзерские папки со словами
 class UserFolderRepository extends EntityRepository
 {
+    const CACHE_TIMEOUT = 60 * 60; // 1 hour
+
     /**
      * @return \DateTime
      */
@@ -38,7 +39,7 @@ class UserFolderRepository extends EntityRepository
             ->useQueryCache (true)
             ->useResultCache(
                 true,
-                MediaController::CACHE_TIMEOUT,
+                self::CACHE_TIMEOUT,
                 'en_words_'.$idUser.'_'.$idFolder.'_'.$lastDateUpdate->getTimestamp()
             )
             ->getResult();
@@ -55,7 +56,7 @@ class UserFolderRepository extends EntityRepository
             ->useQueryCache (true)
             ->useResultCache(
                 true,
-                MediaController::CACHE_TIMEOUT,
+                self::CACHE_TIMEOUT,
                 'en_words_total_'.$idUser.'_'.$idFolder.'_'.$lastDateUpdate->getTimestamp()
             )
             ->getSingleScalarResult();
