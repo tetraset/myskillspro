@@ -247,10 +247,10 @@ class VideoClipManager extends BaseDomainManager
         return $repository->deleteByVideo($video);
     }
 
-    public function getRandomLongVideoClip($notIn = [], $minEase = 90, $maxEase = 100, $ascSymbolSort = true) {
+    public function getRandomLongVideoClip($notIn = [], $minEase = 90, $maxEase = 100) {
         /** @var VideoClipRepository $repository */
         $repository = $this->getEntityRepository();
-        return $repository->findRandomClip($notIn, $minEase, $maxEase, $ascSymbolSort);
+        return $repository->findRandomClip($notIn, $minEase, $maxEase);
     }
 
     public function getClipsByParent(VideoClip $videoClip) {

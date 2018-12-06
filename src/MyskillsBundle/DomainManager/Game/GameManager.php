@@ -110,24 +110,10 @@ class GameManager extends BaseDomainManager
             $maxEase = 100;
             $minEase = 0;
 
-            do {
-                /**
-                 * @var VideoClip $videoClip
-                 */
-                $videoClip = $this->videoClipManager->getRandomLongVideoClip($notIds, $minEase, $maxEase, true);
-
-                if ($videoClip === null && $i > self::SEARCH_CLIPS_LIMIT) {
-                    throw new EntityNotFoundException(VideoClip::class, $user ? $user->getId() : $fingerPrint, $user ? 'user.id' : 'fingerPrint');
-                }
-                if ($videoClip === null) {
-                    $minEase -= 5;
-                    $maxEase += 5;
-                    $i++;
-                    continue;
-                }
-
-                $clips = $this->getClipsByParent($videoClip);
-            } while (!count($clips));
+            $videoClip = $this->videoClipManager->getRandomLongVideoClip($notIds, $minEase, $maxEase);
+            if ($videoClip === null) {
+                throw new EntityNotFoundException(VideoClip::class, $user ? $user->getId() : $fingerPrint, $user ? 'user.id' : 'fingerPrint');
+            }
         }
 
         $game = new Game();
@@ -431,6 +417,6 @@ class GameManager extends BaseDomainManager
      * @return VideoClip
      */
     public function getRandomClip() {
-        return $this->videoClipManager->getRandomLongVideoClip([], 0, 100, true);
+        return $this->videoClipManager->getRandomLongVideoClip([], 0, 100);
     }
 }

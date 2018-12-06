@@ -11,9 +11,7 @@ use JMS\Serializer\Annotation\Accessor;
  * @ORM\Table(name="video_clip", indexes={
  *     @ORM\Index(name="isPublicShortVideoCLips", columns={"is_public", "long_clip"}),
  *     @ORM\Index(name="idVideosSbSearchText", columns={"id_video", "sub_search_text"}),
- *     @ORM\Index(name="randV", columns={"is_public", "ready_for_game", "long_clip", "rand_val"}),
- *     @ORM\Index(name="flesch_complexity", columns={"flesch_kincaid_reading_ease"}),
- *     @ORM\Index(name="complexity", columns={"symbols_count", "gunning_fog_score"})
+ *     @ORM\Index(name="randV", columns={"is_public", "ready_for_game", "long_clip", "flesch_kincaid_reading_ease"}),
  * }, uniqueConstraints={@ORM\UniqueConstraint(name="hash", columns={"hash"})})
  * @ORM\Entity(repositoryClass="MyskillsBundle\Repository\VideoClipRepository")
  */

@@ -32,10 +32,8 @@ class VideoClipRepository extends EntityRepository
     public function findRandomClip(
         $notIds = [],
         $minEase = 90,
-        $maxEase = 100,
-        $ascSymbolSort = true
+        $maxEase = 100
     ) {
-        $randF = rand(0, 9);
         $qb = $this->createQueryBuilder('v');
         $qb
             ->select('v')
@@ -43,8 +41,6 @@ class VideoClipRepository extends EntityRepository
             ->andWhere('v.readyForGame = :readyForGame')
             ->andWhere('v.longClip = :longClip')
             ->andWhere('v.fleschKincaidReadingEase BETWEEN :ease1 AND :ease2')
-            ->orderBy('v.symbolsCount', $ascSymbolSort ? 'ASC' : 'DESC')
-            ->addOrderBy('v.gunningFogScore', $ascSymbolSort ? 'ASC' : 'DESC')
             ->setParameter('isPublic', true)
             ->setParameter('readyForGame', true)
             ->setParameter('longClip', true)
@@ -66,7 +62,6 @@ class VideoClipRepository extends EntityRepository
                     'clips_random_100' .
                     '_' . $minEase .
                     '_' . $maxEase .
-                    '_' . $ascSymbolSort .
                     '_' . implode('_', $notIds)
                 );
         
