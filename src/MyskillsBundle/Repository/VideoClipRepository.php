@@ -63,7 +63,7 @@ class VideoClipRepository extends EntityRepository
                 ->useResultCache(
                     true,
                     self::CACHE_TIMEOUT_SHORT,
-                    'clips_random_' . $randF .
+                    'clips_random_100' .
                     '_' . $minEase .
                     '_' . $maxEase .
                     '_' . $ascSymbolSort .

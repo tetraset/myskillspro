@@ -106,25 +106,9 @@ class GameManager extends BaseDomainManager
                 }, $notIds);
             }
             $i = 0;
-            $clips = [];
 
             $maxEase = 100;
-            $minEase = 90;
-
-            if ($user) {
-                $myLevel = $user->getLevel();
-
-                if ($myLevel >= self::LOW_HARD_LEVEL && $myLevel < self::MEDIUM_HARD_LEVEL) {
-                    $maxEase = 90;
-                    $minEase = 80;
-                } elseif($myLevel >= self::MEDIUM_HARD_LEVEL && $myLevel < self::HIGH_HARD_LEVEL) {
-                    $maxEase = 80;
-                    $minEase = 70;
-                } else {
-                    $maxEase = 70;
-                    $minEase = 0;
-                }
-            }
+            $minEase = 0;
 
             do {
                 /**
