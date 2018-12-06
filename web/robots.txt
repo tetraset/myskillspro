@@ -10,4 +10,4 @@ Disallow: /dictionary
 Disallow: /subscription
 Disallow: /logout
 Disallow: /licence
-Host: myskills.pro
+Host: myskillspro.ru
