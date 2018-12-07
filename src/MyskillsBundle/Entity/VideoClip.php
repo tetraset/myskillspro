@@ -11,7 +11,7 @@ use JMS\Serializer\Annotation\Accessor;
  * @ORM\Table(name="video_clip", indexes={
  *     @ORM\Index(name="isPublicShortVideoCLips", columns={"is_public", "long_clip"}),
  *     @ORM\Index(name="idVideosSbSearchText", columns={"id_video", "sub_search_text"}),
- *     @ORM\Index(name="randV", columns={"is_public", "ready_for_game", "long_clip", "flesch_kincaid_reading_ease"}),
+ *     @ORM\Index(name="randV", columns={"is_public", "ready_for_game", "long_clip", "flesch_kincaid_reading_ease", "rand_val"}),
  * }, uniqueConstraints={@ORM\UniqueConstraint(name="hash", columns={"hash"})})
  * @ORM\Entity(repositoryClass="MyskillsBundle\Repository\VideoClipRepository")
  */
@@ -544,14 +544,14 @@ class VideoClip implements DomainObjectInterface
      * @return string
      */
     public function __toString() {
-        return $this->getId();
+        return (string) $this->getId();
     }
 
     /**
      * @ORM\PrePersist
      */
     public function prePersistTasks() {
-        $this->randVal = rand(0, 99999);
+        $this->randVal = mt_rand(0, 99999);
         $this->preUpdateTasks();
     }
 
@@ -563,7 +563,7 @@ class VideoClip implements DomainObjectInterface
         $this->symbolsCount = strlen($this->getSubSearchText());
         $this->longClip = $this->parentVideoClip === null;
 
-        if(is_null($this->getParentVideoClip())) {
+        if(null === $this->getParentVideoClip()) {
             $this->readyForGame = true;
             return;
         }

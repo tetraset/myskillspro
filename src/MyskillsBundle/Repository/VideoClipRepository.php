@@ -9,6 +9,9 @@ class VideoClipRepository extends EntityRepository
 {
     const CACHE_TIMEOUT = 30 * 24 * 60 * 60; // 1 month
     const CACHE_TIMEOUT_SHORT =  60 * 60; // 1 hour
+    const MIN_RAND_VAL = 0;
+    const MAX_RAND_VAL = 99999;
+    const RAND_OFFSET = 2000;
 
     public function findVideoFileUrlsArr($limit = 100) {
         $qb = $this->createQueryBuilder('v');
@@ -34,6 +37,15 @@ class VideoClipRepository extends EntityRepository
         $minEase = 90,
         $maxEase = 100
     ) {
+        $randV = mt_rand(self::MIN_RAND_VAL, self::MAX_RAND_VAL);
+        if ($randV > self::MAX_RAND_VAL/2) {
+            $minRandV = $randV - self::RAND_OFFSET;
+            $maxRandV = $randV;
+        } else {
+            $minRandV = $randV;
+            $maxRandV = $randV + self::RAND_OFFSET;
+        }
+
         $qb = $this->createQueryBuilder('v');
         $qb
             ->select('v')
@@ -41,11 +53,14 @@ class VideoClipRepository extends EntityRepository
             ->andWhere('v.readyForGame = :readyForGame')
             ->andWhere('v.longClip = :longClip')
             ->andWhere('v.fleschKincaidReadingEase BETWEEN :ease1 AND :ease2')
+            ->andWhere('v.randVal BETWEEN :rand1 AND :rand2')
             ->setParameter('isPublic', true)
             ->setParameter('readyForGame', true)
             ->setParameter('longClip', true)
             ->setParameter('ease1', $minEase)
-            ->setParameter('ease2', $maxEase);
+            ->setParameter('ease2', $maxEase)
+            ->setParameter('rand1', $minRandV)
+            ->setParameter('rand2', $maxRandV);
 
         if (!empty($notIds)) {
             $qb->andWhere('v.id NOT IN (:notIds)')
