@@ -333,7 +333,7 @@ class Book implements DomainObjectInterface
      */
     public function getPosterUrl()
     {
-        return !empty($this->posterUrl) && strpos($this->posterUrl, 'http') !== 0 ? STATIC_SERVER . $this->posterUrl : $this->posterUrl;
+        return $this->posterUrl;
     }
 
     /**
