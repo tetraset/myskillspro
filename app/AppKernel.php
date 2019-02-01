@@ -2,7 +2,7 @@
 
 define('WEB_DIR', __DIR__);
 // default static server (firstvds.ru)
-define('STATIC_SERVER', 'https://static.myskills.pro');
+define('STATIC_SERVER', 'https://myskillspro.ru');
 // static server hosting.jino.ru
 define('STATIC_SERVER2', 'http://j566426.myjino.ru');
 define('STATIC_SERVER3', 'http://snowtankist.myjino.ru');
